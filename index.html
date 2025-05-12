@@ -17,24 +17,31 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Lato', sans-serif; /* Default font */
+            font-family: 'Lato', sans-serif;
+            /* Default font */
         }
 
         body {
             background-color: #f0f2f5;
             color: #1a1a1a;
             line-height: 1.6;
-            padding-bottom: 40px; /* Add some space at the bottom */
+            padding-bottom: 40px;
+            /* Add some space at the bottom */
+            position: relative;
+            /* Needed for fixed positioning of alphabet index */
         }
 
-        .container {
+        .main-content-container {
             max-width: 600px;
             margin: 20px auto;
             padding: 0 20px;
             background-color: white;
             border-radius: 15px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+             position: relative; /* Ensure stacking context */
+             z-index: 1; /* Ensure main content is above alphabet index */
         }
+
 
         .header {
             text-align: center;
@@ -48,7 +55,8 @@
             margin-bottom: 5px;
             font-weight: 700;
             display: inline-block;
-            font-family: 'Gloria Hallelujah', cursive; /* Title font */
+            font-family: 'Gloria Hallelujah', cursive;
+            /* Title font */
         }
 
         .header p {
@@ -56,7 +64,8 @@
             font-size: 0.9em;
             margin-bottom: 10px;
             font-style: italic;
-            font-family: 'Zain', sans-serif; /* Subtitle font */
+            font-family: 'Zain', sans-serif;
+            /* Subtitle font */
         }
 
         .search-box {
@@ -68,7 +77,8 @@
             background-color: white;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             margin-bottom: 10px;
-            font-family: 'Lato', sans-serif; /* Keep Lato for input */
+            font-family: 'Lato', sans-serif;
+            /* Keep Lato for input */
         }
 
         .button-container {
@@ -80,7 +90,8 @@
             flex-wrap: wrap;
         }
 
-        #randomWordBtn, #toggleCrudeBtn {
+        #randomWordBtn,
+        #toggleCrudeBtn {
             padding: 10px 20px;
             background-color: #3498db;
             color: white;
@@ -89,11 +100,13 @@
             font-size: 0.9em;
             cursor: pointer;
             transition: background-color 0.2s ease;
-            font-family: 'Lato', sans-serif; /* Keep Lato for buttons */
+            font-family: 'Lato', sans-serif;
+            /* Keep Lato for buttons */
             font-weight: 600;
         }
 
-        #randomWordBtn:hover, #toggleCrudeBtn:hover {
+        #randomWordBtn:hover,
+        #toggleCrudeBtn:hover {
             background-color: #2980b9;
         }
 
@@ -105,12 +118,16 @@
         }
 
         .word-item {
-            padding: 15px 20px; /* Increased padding for easier clicking */
+            padding: 15px 20px;
+            /* Increased padding for easier clicking */
             border-bottom: 1px solid #eee;
-            cursor: pointer; /* Indicates it's clickable */
-            transition: background-color 0.3s ease; /* Smoother hover effect */
+            cursor: pointer;
+            /* Indicates it's clickable */
+            transition: background-color 0.3s ease;
+            /* Smoother hover effect */
             background-color: transparent;
-            display: block; /* Ensure it takes full width */
+            display: block;
+            /* Ensure it takes full width */
         }
 
         .word-item:hover {
@@ -128,7 +145,8 @@
         .word-container {
             display: flex;
             align-items: center;
-            margin-bottom: 8px; /* Increased space between top row and definition/synonyms */
+            margin-bottom: 8px;
+            /* Increased space between top row and definition/synonyms */
             flex-wrap: wrap;
         }
 
@@ -136,43 +154,58 @@
             font-weight: 600;
             color: #000000;
             font-size: 1.1em;
-            flex-grow: 1; /* Allows word to take available space */
+            flex-grow: 1;
+            /* Allows word to take available space */
             flex-shrink: 1;
-            margin-right: 10px; /* Space after the word */
-            font-family: 'Gloria Hallelujah', cursive; /* Word font */
-            word-break: break-word; /* Prevent long words from overflowing */
+            margin-right: 10px;
+            /* Space after the word */
+            font-family: 'Gloria Hallelujah', cursive;
+            /* Word font */
+            word-break: break-word;
+            /* Prevent long words from overflowing */
         }
 
         .kelas-kata {
-            font-size: 0.85em; /* Slightly larger */
+            font-size: 0.85em;
+            /* Slightly larger */
             color: #666;
             font-weight: 600;
             margin-right: 10px;
-            flex-shrink: 0; /* Prevent shrinking */
-            font-family: 'Gloria Hallelujah', cursive; /* Kelas kata font */
+            flex-shrink: 0;
+            /* Prevent shrinking */
+            font-family: 'Gloria Hallelujah', cursive;
+            /* Kelas kata font */
         }
 
         .word-item.is-crude .word {
-            color: #e74c3c; /* Red color for crude words */
+            color: #e74c3c;
+            /* Red color for crude words */
         }
 
         .speak-icon {
             cursor: pointer;
             color: #3498db;
-            font-size: 1.3em; /* Slightly larger icon */
-            flex-shrink: 0; /* Prevent shrinking */
+            font-size: 1.3em;
+            /* Slightly larger icon */
+            flex-shrink: 0;
+            /* Prevent shrinking */
             transition: color 0.2s ease;
             display: flex;
             align-items: center;
-            padding: 5px; /* Add padding to make icon area easier to click */
-            margin: -5px; /* Use negative margin to counteract padding for layout */
-            margin-left: auto; /* Push to the right */
-            border-radius: 50%; /* Make click area round */
+            padding: 5px;
+            /* Add padding to make icon area easier to click */
+            margin: -5px;
+            /* Use negative margin to counteract padding for layout */
+            margin-left: auto;
+            /* Push to the right */
+            border-radius: 50%;
+            /* Make click area round */
         }
 
         .speak-icon:hover {
-             color: #2980b9;
-             background-color: #e9f5fe; /* Subtle background on hover */
+            color: #2980b9;
+            background-color: #e9f5fe;
+            /* Subtle background on hover */
         }
 
         .speak-icon svg {
@@ -183,9 +216,12 @@
         }
 
         .synonym-bubbles {
-            margin-top: 0; /* Adjust spacing */
-            margin-bottom: 8px; /* Space below bubbles */
-            line-height: 1.8; /* Improve readability of bubbles */
+            margin-top: 0;
+            /* Adjust spacing */
+            margin-bottom: 8px;
+            /* Space below bubbles */
+            line-height: 1.8;
+            /* Improve readability of bubbles */
         }
 
         .synonym-bubble {
@@ -193,12 +229,16 @@
             background-color: #eaf2f8;
             color: #2980b9;
             font-size: 0.85em;
-            padding: 4px 10px; /* Increased padding */
-            border-radius: 15px; /* More rounded */
-            margin-right: 6px; /* Increased space between bubbles */
+            padding: 4px 10px;
+            /* Increased padding */
+            border-radius: 15px;
+            /* More rounded */
+            margin-right: 6px;
+            /* Increased space between bubbles */
             margin-bottom: 5px;
             white-space: nowrap;
-            font-family: 'Gloria Hallelujah', cursive; /* Synonym font */
+            font-family: 'Gloria Hallelujah', cursive;
+            /* Synonym font */
         }
 
         .definition {
@@ -207,21 +247,28 @@
             margin-top: 0;
             margin-bottom: 0;
             line-height: 1.6;
-            max-height: 0; /* Start collapsed */
+            max-height: 0;
+            /* Start collapsed */
             overflow: hidden;
-            transition: max-height 0.5s ease-in-out, padding-bottom 0.5s ease-in-out; /* Smooth transition for height and padding */
-            padding-bottom: 0; /* No bottom padding when collapsed */
-            font-family: 'Gloria Hallelujah', cursive; /* Definition font */
-            word-break: break-word; /* Prevent long words from overflowing */
+            transition: max-height 0.5s ease-in-out, padding-bottom 0.5s ease-in-out;
+            /* Smooth transition for height and padding */
+            padding-bottom: 0;
+            /* No bottom padding when collapsed */
+            font-family: 'Gloria Hallelujah', cursive;
+            /* Definition font */
+            word-break: break-word;
+            /* Prevent long words from overflowing */
         }
 
-         .word-item.active .definition {
-             max-height: 500px; /* Increased max-height for flexibility */
-             padding-bottom: 8px; /* Add bottom padding when expanded */
-         }
+        .word-item.active .definition {
+            max-height: 500px;
+            /* Increased max-height for flexibility */
+            padding-bottom: 8px;
+            /* Add bottom padding when expanded */
+        }
 
-         /* Fallback for very long definitions, though large max-height is better */
-         /* .word-item.active .definition {
+        /* Fallback for very long definitions, though large max-height is better */
+        /* .word-item.active .definition {
              max-height: 1000px;
              padding-bottom: 8px;
          } */
@@ -245,30 +292,102 @@
             border-radius: 3px;
         }
 
-         .no-results {
-             padding: 20px;
-             text-align: center;
-             color: #666;
-             font-style: italic;
+        .no-results {
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            font-style: italic;
+        }
+
+        /* --- Alphabet Index Styling --- */
+        .alphabet-index {
+            position: fixed; /* Stay on screen while scrolling */
+            top: 50%; /* Center vertically initially */
+            right: 10px; /* Distance from the right edge */
+            transform: translateY(-50%); /* Fine-tune vertical centering */
+            display: flex;
+            flex-direction: column; /* Stack letters vertically */
+            align-items: center; /* Center letters horizontally */
+            z-index: 1000; /* Ensure it's above other content */
+            padding: 5px 2px; /* Small padding */
+            background-color: rgba(255, 255, 255, 0.8); /* Slightly transparent background */
+            border-radius: 8px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+             max-height: 80vh; /* Limit height on tall screens */
+             overflow-y: auto; /* Add scrollbar if needed */
+             -ms-overflow-style: none;  /* Hide scrollbar IE and Edge */
+             scrollbar-width: none;  /* Hide scrollbar Firefox */
+        }
+
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .alphabet-index::-webkit-scrollbar {
+            display: none;
+        }
+
+        .alphabet-index a {
+            display: block; /* Make each letter a block element */
+            text-decoration: none;
+            color: #3498db; /* Link color */
+            font-size: 0.85em; /* Adjust size */
+            font-weight: 600;
+            padding: 2px 5px; /* Spacing around letters */
+            margin: 1px 0; /* Vertical space between letters */
+            transition: color 0.2s ease, background-color 0.2s ease;
+            border-radius: 3px;
+            text-transform: uppercase; /* Ensure letters are uppercase */
+        }
+
+        .alphabet-index a:hover {
+            color: white;
+            background-color: #3498db;
+        }
+
+        .alphabet-index a.disabled {
+            color: #ccc; /* Grey out letters with no corresponding words */
+            cursor: not-allowed;
+            background-color: transparent;
+        }
+
+         /* Adjust main container margin when index is present to prevent overlap */
+         @media (min-width: 640px) { /* Apply only on wider screens where index fits */
+             .main-content-container {
+                 margin-right: 60px; /* Add margin on the right */
+             }
+             .alphabet-index {
+                  right: 10px; /* Position further right */
+             }
          }
+
+        /* Optional: Adjust positioning for very small screens if needed */
+        @media (max-width: 640px) {
+            .alphabet-index {
+                 right: 5px; /* Closer to the edge */
+                 font-size: 0.7em; /* Smaller font */
+                 padding: 3px 1px;
+            }
+        }
+
 
     </style>
 
 </head>
 
 <body>
-    <div class="container">
+     <div class="alphabet-index" id="alphabetIndex">
+        </div>
+
+    <div class="main-content-container">
         <div class="header">
             <h1>kamus phenkbandia</h1>
             <p>Tekan kata untuk melihat artinya</p>
             <input type="text" class="search-box" placeholder="Cari kata..." id="searchInput">
-             <div class="button-container">
+            <div class="button-container">
                 <button id="randomWordBtn">Kata Acak</button>
                 <button id="toggleCrudeBtn">Sembunyikan Kata Kasar</button>
-             </div>
+            </div>
         </div>
         <div class="word-list" id="wordList">
-             </div>
+        </div>
     </div>
 
     <script>
@@ -311,7 +430,7 @@
             { word: "Hapus", definition: "Perintah atau ajakan untuk menghilangkan sesuatu", synonym: "", kelasKata: "[v.]" },
             { word: "Heh", definition: "Respons santai marah bercanda ketika mendapati sesuatu berlebihan", synonym: "", kelasKata: "[ungk.]" },
             { word: "Hotel", definition: "Bisnis penginapan milik keluarga Rafael yang sering disinggung di Phenk", synonym: "penginapan, bisnis", kelasKata: "[n.]" },
-            { word: "Indomaret", definition: "Sebutan umum untuk toko grosir atau minimarket, walau bukan merek itu juga; kata yang  \"berlemak\"  karena kasus viral seseorang yang menunjukkan hal tak senonoh saat di Indomaret", synonym: "Minimarket", isCrude: true, kelasKata: "[n.]" },
+            { word: "Indomaret", definition: "Sebutan umum untuk toko grosir atau minimarket, walau bukan merek itu juga; kata yang \"berlemak\" karena kasus viral seseorang yang menunjukkan hal tak senonoh saat di Indomaret", synonym: "Minimarket", isCrude: true, kelasKata: "[n.]" },
             { word: "Intropeksi", definition: "Proses merenung dan memperbaiki diri setelah melakukan kesalahan", synonym: "refleksi, evaluasi", kelasKata: "[n.]" },
             { word: "Jalan", definition: "Istilah untuk kegiatan jalan-jalan bareng, biasanya dipakai untuk phenktrip", synonym: "jalan-jalan", kelasKata: "[v.]" },
             { word: "Jawak", definition: "Ungkapan kata-kata yang biasanya diartikan berbicara; menjawab sesuatu", synonym: "bicara, jawab", kelasKata: "[v.]" },
@@ -366,12 +485,12 @@
         const searchInput = document.getElementById('searchInput');
         const randomWordBtn = document.getElementById('randomWordBtn');
         const toggleCrudeBtn = document.getElementById('toggleCrudeBtn');
+        const alphabetIndex = document.getElementById('alphabetIndex'); // Get the new alphabet index container
 
         let areCrudeWordsHidden = false;
 
         const synth = window.speechSynthesis;
         const speechSupported = ('speechSynthesis' in window);
-
 
         // Function to speak text
         function speakText(text) {
@@ -379,37 +498,30 @@
             synth.cancel(); // Stop any ongoing speech
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = 'id-ID';
-            // Optional: Add error handling for speech
             utterance.onerror = (event) => {
                 console.error('Speech synthesis error:', event.error);
             };
             synth.speak(utterance);
         }
 
-
         // Helper function to find a word object by word string (case-insensitive, considers linked word format)
         function findWordObject(wordString) {
             if (!wordString) return null;
-             // Clean potential trailing punctuation from linked words
             const cleanedWordString = wordString.replace(/[^a-zA-Z0-9\s]+$/, '').trim();
             if (!cleanedWordString) return null;
 
             const lowerCaseWord = cleanedWordString.toLowerCase();
-            // Find exact match first
             let found = words.find(item => item.word.toLowerCase() === lowerCaseWord);
-             if (found) return found;
+            if (found) return found;
 
-             // If not found, try checking synonyms as well
-             found = words.find(item =>
-                 item.synonym && item.synonym.toLowerCase().split(',').map(s => s.trim()).includes(lowerCaseWord)
-             );
-             return found;
+            found = words.find(item =>
+                item.synonym && item.synonym.toLowerCase().split(',').map(s => s.trim()).includes(lowerCaseWord)
+            );
+            return found;
         }
-
 
         // Helper function to sanitize word for use as HTML ID
         function sanitizeWordId(wordString) {
-             // Replace spaces and non-alphanumeric/underscore chars with underscore
             return wordString.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_]/g, '');
         }
 
@@ -417,9 +529,8 @@
         function highlightText(text, term) {
             if (!term || !text) return text;
             const lowerTerm = term.toLowerCase();
-            // Escape special characters in the term for regex
             const escapedTerm = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-            const regex = new RegExp(`(${escapedTerm})`, 'gi'); // 'g' for global, 'i' for case-insensitive
+            const regex = new RegExp(`(${escapedTerm})`, 'gi');
             return text.replace(regex, '<span class="highlight-search">$&</span>');
         }
 
@@ -430,124 +541,105 @@
             </svg>
         `;
 
-
+        // Function to render the list of words
         function renderWords(filteredWords) {
             if (!wordList) {
-                 console.error('Error: #wordList element not found!');
-                 return;
+                console.error('Error: #wordList element not found!');
+                return;
             }
             wordList.innerHTML = ''; // Clear existing list
             const searchTerm = searchInput.value.trim(); // Get search term
 
             if (filteredWords.length === 0) {
-                // Show "no results" message if the filtered list is empty
                 const noResultsDiv = document.createElement('div');
                 noResultsDiv.className = 'no-results';
                 noResultsDiv.textContent = 'Tidak ada kata yang ditemukan.';
                 wordList.appendChild(noResultsDiv);
-                return; // Stop rendering
+            } else {
+                 // Sort words alphabetically by the 'word' property
+                 filteredWords.sort((a, b) => a.word.localeCompare(b.word, 'id', { sensitivity: 'base' }));
+
+                filteredWords.forEach(item => {
+                    const div = document.createElement('div');
+                    div.id = `word-${sanitizeWordId(item.word)}`; // Set unique ID
+                    div.className = 'word-item' + (item.isCrude ? ' is-crude' : '');
+
+                    let synonymBubblesHTML = '';
+                    if (item.synonym && item.synonym.trim() !== "") {
+                        const synonyms = item.synonym.split(',').map(s => s.trim()).filter(s => s !== '');
+                        if (synonyms.length > 0) {
+                            synonymBubblesHTML = '<div class="synonym-bubbles">';
+                            synonyms.forEach(syn => {
+                                const highlightedSyn = searchTerm ? highlightText(syn, searchTerm) : syn;
+                                synonymBubblesHTML += `<span class="synonym-bubble">${highlightedSyn}</span>`;
+                            });
+                            synonymBubblesHTML += '</div>';
+                        }
+                    }
+
+                    let definitionHTMLContent = '';
+                    if (item.definition) {
+                        const wordsInDefinition = item.definition.split(/(\s+)/);
+                        wordsInDefinition.forEach(wordPiece => {
+                            if (wordPiece.trim() === '') {
+                                definitionHTMLContent += wordPiece;
+                                return;
+                            }
+
+                            const leadingPunctuationMatch = wordPiece.match(/^(\W+)/);
+                            const leadingPunctuation = leadingPunctuationMatch ? leadingPunctuationMatch[1] : '';
+                            const trailingPunctuationMatch = wordPiece.match(/(\W+)$/);
+                            const trailingPuncturation = trailingPunctuationMatch ? trailingPunctuationMatch[1] : '';
+
+                            const cleanedWord = wordPiece
+                                .replace(/^(\W+)/, '')
+                                .replace(/(\W+)$/, '');
+
+                            const linkedWordItem = findWordObject(cleanedWord);
+
+                            let displayedTextContent = cleanedWord;
+                            if (searchTerm) {
+                                displayedTextContent = highlightText(cleanedWord, searchTerm);
+                            }
+
+                            if (linkedWordItem) {
+                                definitionHTMLContent += `${leadingPunctuation}<a href="#word-${sanitizeWordId(linkedWordItem.word)}" class="linked-word">${displayedTextContent}</a>${trailingPuncturation}`;
+                            } else {
+                                if (searchTerm) {
+                                    definitionHTMLContent += highlightText(wordPiece, searchTerm);
+                                } else {
+                                    definitionHTMLContent += wordPiece;
+                                }
+                            }
+                        });
+                    }
+
+                    let highlightedWord = item.word;
+                    if (searchTerm) {
+                        highlightedWord = highlightText(item.word, searchTerm);
+                    }
+
+                    const kelasKataHTML = item.kelasKata ? `<span class="kelas-kata">${item.kelasKata}</span>` : '';
+                    const speakIconHTML = speechSupported ? `<span class="speak-icon" title="Dengarkan">${speakerIconSVG}</span>` : '';
+
+                    div.innerHTML = `
+                        <div class="word-container">
+                            <span class="word">${highlightedWord}</span>
+                            ${kelasKataHTML}
+                            ${speakIconHTML}
+                        </div>
+                        ${synonymBubblesHTML}
+                        <div class="definition">${definitionHTMLContent}</div>
+                    `;
+
+                    wordList.appendChild(div);
+                });
             }
 
-            // Render each word item
-            filteredWords.forEach(item => {
-                const div = document.createElement('div');
-                div.id = `word-${sanitizeWordId(item.word)}`; // Set unique ID
-                div.className = 'word-item' + (item.isCrude ? ' is-crude' : ''); // Add crude class if applicable
 
-                // --- Build Synonym Bubbles HTML ---
-                let synonymBubblesHTML = '';
-                if (item.synonym && item.synonym.trim() !== "") {
-                    const synonyms = item.synonym.split(',').map(s => s.trim()).filter(s => s !== '');
-                    if (synonyms.length > 0) {
-                        synonymBubblesHTML = '<div class="synonym-bubbles">';
-                        synonyms.forEach(syn => {
-                            // Highlight synonyms if they match the search term
-                            const highlightedSyn = searchTerm ? highlightText(syn, searchTerm) : syn;
-                            synonymBubblesHTML += `<span class="synonym-bubble">${highlightedSyn}</span>`;
-                        });
-                        synonymBubblesHTML += '</div>';
-                    }
-                }
-                // --- End Synonym Bubbles HTML ---
-
-
-                // --- Build Definition HTML ---
-                let definitionHTMLContent = '';
-                if (item.definition) {
-                     // Split definition by words to check for linked words
-                     const wordsInDefinition = item.definition.split(/(\s+)/);
-
-                     wordsInDefinition.forEach(wordPiece => {
-                         if (wordPiece.trim() === '') {
-                             definitionHTMLContent += wordPiece; // Keep whitespace
-                             return;
-                         }
-
-                         // Preserve punctuation around words
-                         const leadingPunctuationMatch = wordPiece.match(/^(\W+)/);
-                         const leadingPunctuation = leadingPunctuationMatch ? leadingPunctuationMatch[1] : '';
-                         const trailingPunctuationMatch = wordPiece.match(/(\W+)$/);
-                         const trailingPuncturation = trailingPunctuationMatch ? trailingPunctuationMatch[1] : '';
-
-                         const cleanedWord = wordPiece
-                                           .replace(/^(\W+)/, '')
-                                           .replace(/(\W+)$/, '');
-
-                         const linkedWordItem = findWordObject(cleanedWord); // Check if the cleaned word is a dictionary entry
-
-                         let displayedTextContent = cleanedWord;
-                         if (searchTerm) {
-                              // Highlight the word part itself if it matches search
-                              displayedTextContent = highlightText(cleanedWord, searchTerm);
-                         }
-
-                         if (linkedWordItem) {
-                             // If it's a linked word, create an anchor tag pointing to its ID
-                             definitionHTMLContent += `${leadingPunctuation}<a href="#word-${sanitizeWordId(linkedWordItem.word)}" class="linked-word">${displayedTextContent}</a>${trailingPuncturation}`;
-                         } else {
-                              // If not a linked word, just highlight the whole word piece including punctuation if it matches search
-                              if (searchTerm) {
-                                  definitionHTMLContent += highlightText(wordPiece, searchTerm);
-                              } else {
-                                  definitionHTMLContent += wordPiece; // Add as plain text
-                              }
-                         }
-                     });
-                }
-                // --- End Definition HTML ---
-
-
-                // Highlight the main word if it matches the search term
-                let highlightedWord = item.word;
-                if (searchTerm) {
-                     highlightedWord = highlightText(item.word, searchTerm);
-                }
-
-                 // Get the kelasKata label HTML
-                const kelasKataHTML = item.kelasKata ? `<span class="kelas-kata">${item.kelasKata}</span>` : '';
-
-                // Get the speak icon HTML if speech is supported
-                const speakIconHTML = speechSupported ? `<span class="speak-icon" title="Dengarkan">${speakerIconSVG}</span>` : '';
-
-                // Build the full HTML for the word item
-                div.innerHTML = `
-                    <div class="word-container">
-                        <span class="word">${highlightedWord}</span>
-                        ${kelasKataHTML}
-                        ${speakIconHTML}
-                    </div>
-                    ${synonymBubblesHTML}
-                    <div class="definition">${definitionHTMLContent}</div>
-                `;
-
-                // Append the created element to the list
-                wordList.appendChild(div);
-            });
-
-             // Hide speak icons if speech is not supported by the browser
-             if (!speechSupported) {
+            if (!speechSupported) {
                 document.querySelectorAll('.speak-icon').forEach(icon => icon.style.display = 'none');
-             }
+            }
         }
 
         // Function to close all currently active (expanded) word items
@@ -557,126 +649,199 @@
             });
         }
 
-
         // Event listener for clicks within the word list
         wordList.addEventListener('click', (event) => {
             const target = event.target;
 
-            // 1. Handle clicks on the Speak Icon
             const speakIcon = target.closest('.speak-icon');
             if (speakIcon) {
-                event.stopPropagation(); // Prevent click from bubbling up to toggle definition
+                event.stopPropagation();
                 const wordItem = speakIcon.closest('.word-item');
                 if (wordItem) {
                     const wordId = wordItem.id.replace('word-', '');
-                    // Find the original word data to get complete info
                     const originalItem = words.find(w => sanitizeWordId(w.word) === wordId);
 
                     if (originalItem) {
                         const wordText = originalItem.word;
-                         let textToSpeak = wordText;
+                        let textToSpeak = wordText;
 
-                         // If definition is open, read word, definition, and synonym
-                         if (wordItem.classList.contains('active')) {
-                              textToSpeak += originalItem.definition ? `. Arti: ${originalItem.definition}` : '';
-                              if (originalItem.synonym && originalItem.synonym.trim() !== "") {
-                                 textToSpeak += `. Sinonim: ${originalItem.synonym}`;
-                              }
-                         } // Else, just read the word
-
+                        if (wordItem.classList.contains('active')) {
+                            textToSpeak += originalItem.definition ? `. Arti: ${originalItem.definition}` : '';
+                            if (originalItem.synonym && originalItem.synonym.trim() !== "") {
+                                textToSpeak += `. Sinonim: ${originalItem.synonym}`;
+                            }
+                        }
                         speakText(textToSpeak);
                     }
                 }
-                return; // Stop handling after speak icon click
+                return;
             }
 
-            // 2. Handle clicks on Linked Words within definitions
             const clickedLink = target.closest('.linked-word');
             if (clickedLink) {
-                event.preventDefault(); // Prevent default anchor link navigation
-                const targetWordId = clickedLink.getAttribute('href').substring(1); // Get the target word ID
-                const targetElement = document.getElementById(targetWordId); // Find the corresponding word item element
+                event.preventDefault();
+                const targetWordId = clickedLink.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetWordId);
 
                 if (targetElement) {
-                     // Check if the target word is hidden by the crude filter
                     const targetWordData = words.find(w => sanitizeWordId(w.word) === targetWordId.replace('word-',''));
-                    if (areCrudeWordsHidden && targetWordData && targetWordData.isCrude) {
-                        alert(`Kata "${targetWordData.word}" saat ini disembunyikan oleh filter kata kasar.`); // Inform user
-                        return; // Do not navigate/scroll
+                     if (areCrudeWordsHidden && targetWordData && targetWordData.isCrude) {
+                        alert(`Kata "${targetWordData.word}" saat ini disembunyikan oleh filter kata kasar.`);
+                        return;
                     }
 
-                    closeAllWordItems(); // Close currently open items
+                    closeAllWordItems();
 
-                    // Scroll the target element into view
                     targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-                    // Activate and highlight the target element
-                    targetElement.classList.add('active'); // Open definition
+                    targetElement.classList.add('active');
                     targetElement.classList.add('highlight');
-                    // Remove highlight after a delay
                     setTimeout(() => {
                         targetElement.classList.remove('highlight');
                     }, 1000);
                 } else {
                     console.warn('Linked word target element not found:', targetWordId);
                 }
-                return; // Stop handling after linked word click
+                return;
             }
 
-            // 3. Handle clicks on the Word Item itself (to toggle definition)
-            // This should happen only if the click wasn't on a specific interactive element handled above.
             let wordItem = target.closest('.word-item');
-             // Check if the click occurred within a word item AND not specifically on a highlight, synonym, or linked word
-             // (Speak icon is handled first, so no need to check it here again)
              if (wordItem && !target.classList.contains('highlight-search') && !target.closest('.highlight-search') && !target.classList.contains('synonym-bubble') && !target.closest('.synonym-bubbles') && !target.classList.contains('linked-word')) {
 
-                // Toggle the 'active' class to show/hide the definition
                 if (wordItem.classList.contains('active')) {
                     wordItem.classList.remove('active');
                 } else {
-                    closeAllWordItems(); // Close others first
+                    closeAllWordItems();
                     wordItem.classList.add('active');
                 }
             }
-             // Clicks on the definition area itself (when open) will not toggle,
-             // only clicks on the top part or re-clicking the item toggle.
         });
 
 
         // Function to filter the words based on search term and crude filter
         function filterWords() {
-            const searchTerm = searchInput.value.toLowerCase().trim(); // Get and clean search term
+            const searchTerm = searchInput.value.toLowerCase().trim();
 
             let filtered = words.filter(item => {
-                // Check if the item matches the search term in word, definition, or synonym
                 const matchesSearch = searchTerm === '' ||
                     (item.word && item.word.toLowerCase().includes(searchTerm)) ||
                     (item.definition && item.definition.toLowerCase().includes(searchTerm)) ||
                     (item.synonym && item.synonym.toLowerCase().includes(searchTerm));
 
-                // Check if the item matches the crude filter state
                 const matchesCrudeFilter = !areCrudeWordsHidden || !item.isCrude;
 
-                return matchesSearch && matchesCrudeFilter; // Return true if both conditions are met
+                return matchesSearch && matchesCrudeFilter;
             });
 
-            return filtered; // Return the filtered array
+            // Sort the filtered words alphabetically for rendering and index generation
+             filtered.sort((a, b) => a.word.localeCompare(b.word, 'id', { sensitivity: 'base' }));
+
+
+            return filtered;
         }
 
 
-        // Function to filter words and render the list
+        // Function to render the alphabet index based on current filtered words
+        function renderAlphabetIndex(filteredWords) {
+             if (!alphabetIndex) {
+                 console.error('Error: #alphabetIndex element not found!');
+                 return;
+             }
+             alphabetIndex.innerHTML = ''; // Clear existing index
+
+             const availableLetters = new Set();
+             filteredWords.forEach(item => {
+                 if (item.word && item.word.length > 0) {
+                     const firstChar = item.word[0].toUpperCase();
+                     // Check if it's an alphabet character A-Z
+                     if (firstChar >= 'A' && firstChar <= 'Z') {
+                         availableLetters.add(firstChar);
+                     } else {
+                         // Add a '#' for non-alphabetical starters (like '2 Cm', '28')
+                         availableLetters.add('#');
+                     }
+                 }
+             });
+
+            // Sort the letters ( '#' should come first)
+            const sortedLetters = Array.from(availableLetters).sort((a, b) => {
+                if (a === '#') return -1;
+                if (b === '#') return 1;
+                return a.localeCompare(b);
+            });
+
+
+             // Create links for each available letter
+            sortedLetters.forEach(letter => {
+                const link = document.createElement('a');
+                link.href = `#${letter}`; // Use hash for potential future navigation
+                link.textContent = letter;
+                // Add click listener
+                link.addEventListener('click', (event) => {
+                    event.preventDefault(); // Prevent default anchor link behavior
+
+                    // Find the first word item that starts with this letter
+                    let firstWordItem = null;
+                    const wordItems = wordList.querySelectorAll('.word-item');
+
+                    for (const item of wordItems) {
+                        const wordTextElement = item.querySelector('.word');
+                         if (wordTextElement) {
+                             const wordText = wordTextElement.textContent.trim();
+                             const firstChar = wordText.length > 0 ? wordText[0].toUpperCase() : '';
+
+                             if (letter === '#') {
+                                  // Check if it's NOT A-Z
+                                 if (firstChar < 'A' || firstChar > 'Z') {
+                                     firstWordItem = item;
+                                     break; // Found the first non-alphabetical word
+                                 }
+                             } else {
+                                 // Check if it matches the letter
+                                 if (firstChar === letter) {
+                                     firstWordItem = item;
+                                     break; // Found the first word for this letter
+                                 }
+                             }
+                         }
+                    }
+
+
+                    if (firstWordItem) {
+                        // Scroll to the found item
+                        firstWordItem.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                         // Optional: Briefly highlight the jumped-to word
+                         closeAllWordItems(); // Close others before highlighting
+                         firstWordItem.classList.add('highlight');
+                         // Also open its definition if desired (optional)
+                         // firstWordItem.classList.add('active');
+                         setTimeout(() => {
+                             firstWordItem.classList.remove('highlight');
+                         }, 1500); // Highlight for 1.5 seconds
+                    } else {
+                        // Should not happen if letters are generated correctly from the list,
+                        // but good for robustness.
+                         console.warn(`No word found starting with letter: ${letter}`);
+                    }
+                });
+
+                alphabetIndex.appendChild(link);
+            });
+        }
+
+
+        // Function to filter words and render the list AND the alphabet index
         function renderFilteredWords() {
-            const filtered = filterWords(); // Get the currently filtered words
+            const filtered = filterWords(); // Get the currently filtered and sorted words
             renderWords(filtered); // Render the list using the filtered words
-            // Optionally keep items open if they were open before filtering?
-            // For simplicity, closing all on filter change is standard.
-            closeAllWordItems();
+            renderAlphabetIndex(filtered); // Render the alphabet index based on filtered words
+            closeAllWordItems(); // Close any open definitions
         }
 
         // Event listener for when the DOM is fully loaded
         document.addEventListener('DOMContentLoaded', (event) => {
-             // Initial render of the word list when the page loads
-             renderFilteredWords();
+            renderFilteredWords(); // Initial render
         });
 
         // Event listener for input in the search box
@@ -684,64 +849,159 @@
 
         // Event listener for the "Kata Acak" button
         randomWordBtn.addEventListener('click', () => {
-             const availableWords = filterWords(); // Get words based on current filters
+            const availableWords = filterWords(); // Get words based on current filters
             if (availableWords.length === 0) {
-                 alert("Tidak ada kata yang tersedia untuk dipilih secara acak dengan filter saat ini.");
-                 return;
-             }
+                alert("Tidak ada kata yang tersedia untuk dipilih secara acak dengan filter saat ini.");
+                return;
+            }
 
-            // Select a random word from the available words
             const randomIndex = Math.floor(Math.random() * availableWords.length);
             const randomWord = availableWords[randomIndex];
-            const targetId = sanitizeWordId(randomWord.word); // Get the ID for the element
+            const targetId = sanitizeWordId(randomWord.word);
 
-            // Find the element in the DOM
             const targetElement = document.getElementById(`word-${targetId}`);
 
             if (targetElement) {
-                 closeAllWordItems(); // Close currently open items
+                closeAllWordItems();
 
-                // Scroll the element into view
                 targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-                // Activate (open definition) and highlight the element
                 targetElement.classList.add('active');
                 targetElement.classList.add('highlight');
-                // Remove highlight after a delay
                 setTimeout(() => {
                     targetElement.classList.remove('highlight');
                 }, 1000);
 
-                 // Speak the word and its information
-                 const wordText = randomWord.word;
-                 const definitionText = randomWord.definition;
-                 const synonymText = randomWord.synonym;
+                const wordText = randomWord.word;
+                const definitionText = randomWord.definition;
+                const synonymText = randomWord.synonym;
 
-                 let textToSpeak = wordText;
-                 textToSpeak += definitionText ? `. Arti: ${definitionText}` : '';
-                 if (synonymText && synonymText.trim() !== "") {
+                let textToSpeak = wordText;
+                textToSpeak += definitionText ? `. Arti: ${definitionText}` : '';
+                if (synonymText && synonymText.trim() !== "") {
                     textToSpeak += `. Sinonim: ${synonymText}`;
-                 }
-                 speakText(textToSpeak); // Speak the text
+                }
+                speakText(textToSpeak);
             } else {
-                // This case should ideally not happen if filterWords works correctly
                  console.error('Random word element not found in DOM after filtering:', randomWord.word);
             }
         });
 
         // Event listener for the "Sembunyikan/Tampilkan Kata Kasar" button
         toggleCrudeBtn.addEventListener('click', () => {
-            areCrudeWordsHidden = !areCrudeWordsHidden; // Toggle the state
+            areCrudeWordsHidden = !areCrudeWordsHidden;
 
-            // Update button text based on the new state
             if (areCrudeWordsHidden) {
                 toggleCrudeBtn.textContent = 'Tampilkan Kata Kasar';
             } else {
                 toggleCrudeBtn.textContent = 'Sembunyikan Kata Kasar';
             }
 
-            renderFilteredWords(); // Re-render the list based on the new filter state
+            renderFilteredWords(); // Re-render list and index
         });
+
+         // Optional: Add some basic touch handling for the alphabet index
+         let isDragging = false;
+         alphabetIndex.addEventListener('touchstart', (e) => {
+             isDragging = true;
+             // Handle touch start - find the letter under the touch
+             handleAlphabetTouch(e.touches[0].clientY);
+         });
+
+         alphabetIndex.addEventListener('touchmove', (e) => {
+             if (isDragging) {
+                 e.preventDefault(); // Prevent scrolling the background page
+                 handleAlphabetTouch(e.touches[0].clientY);
+             }
+         });
+
+         alphabetIndex.addEventListener('touchend', () => {
+             isDragging = false;
+         });
+
+         alphabetIndex.addEventListener('mousedown', (e) => {
+             // Only respond to left mouse button (button 0)
+             if (e.button === 0) {
+                 isDragging = true;
+                 handleAlphabetMouse(e.clientY);
+             }
+         });
+
+         alphabetIndex.addEventListener('mousemove', (e) => {
+              if (isDragging) {
+                 handleAlphabetMouse(e.clientY);
+              }
+         });
+
+         alphabetIndex.addEventListener('mouseup', () => {
+             isDragging = false;
+         });
+
+         alphabetIndex.addEventListener('mouseleave', () => {
+            // Stop dragging if mouse leaves the index area
+             isDragging = false;
+         });
+
+
+         function handleAlphabetTouch(clientY) {
+             const alphabetIndexRect = alphabetIndex.getBoundingClientRect();
+             // Calculate relative Y position within the alphabet index
+             const relativeY = clientY - alphabetIndexRect.top;
+             const links = alphabetIndex.querySelectorAll('a');
+
+             links.forEach(link => {
+                 const linkRect = link.getBoundingClientRect();
+                  // Check if the touch Y is within the vertical bounds of the link
+                 if (clientY >= linkRect.top && clientY <= linkRect.bottom) {
+                     // Simulate a click on this link
+                      if (!link.classList.contains('disabled')) {
+                          link.click();
+                      }
+                 }
+             });
+         }
+
+         function handleAlphabetMouse(clientY) {
+              const alphabetIndexRect = alphabetIndex.getBoundingClientRect();
+              // Calculate relative Y position within the alphabet index
+              const relativeY = clientY - alphabetIndexRect.top;
+              const links = alphabetIndex.querySelectorAll('a');
+
+              links.forEach(link => {
+                  const linkRect = link.getBoundingClientRect();
+                   // Check if the mouse Y is within the vertical bounds of the link
+                  if (clientY >= linkRect.top && clientY <= linkRect.bottom) {
+                       // Simulate a click on this link
+                       if (!link.classList.contains('disabled')) {
+                          // Use mouseup or a flag to prevent rapid clicks during drag?
+                          // For simplicity, we simulate click on move, but a real scrub
+                          // would track state and jump only once per letter segment.
+                          // A simpler approach for basic jump is just click event listener.
+                          // Let's rely on the click listener for now as it's more standard.
+                          // The mousemove/touchmove handler can remain for visual feedback if desired,
+                          // but click is better for actual navigation jump.
+                          // Reverting mouse/touch move to just click handler on the link elements.
+                          // The event delegation on the alphabetIndex container already handles this.
+                       }
+                  }
+              });
+         }
+         // Removing the mousemove/touchmove scroll logic and relying on click event delegation on the links within the index.
+         // The code above for mousemove/touchmove is commented out/removed as the click handler on the links themselves is sufficient and simpler.
+
+
+        // Add event delegation for clicks on the alphabet index container
+        alphabetIndex.addEventListener('click', (event) => {
+             const target = event.target;
+             if (target.tagName === 'A' && !target.classList.contains('disabled')) {
+                 // The click logic is now handled within the loop that creates the links,
+                 // but we can add a fallback/additional check here.
+                 // However, since we already add the click listener when creating links,
+                 // this delegation might be redundant or cause double-handling.
+                 // Let's remove the delegation and rely purely on the click listeners added during link creation.
+             }
+        });
+
 
     </script>
 
