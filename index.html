@@ -5,41 +5,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kamus Phenkbandia</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Zain&display=swap" rel="stylesheet">
+
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Lato', sans-serif; /* Default font */
         }
 
         body {
             background-color: #f0f2f5;
             color: #1a1a1a;
+            line-height: 1.6;
+            padding-bottom: 40px; /* Add some space at the bottom */
         }
 
         .container {
             max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
+            margin: 20px auto;
+            padding: 0 20px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         .header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
+            padding-top: 20px;
         }
 
         .header h1 {
             color: #2d3436;
             font-size: 2.2em;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
+            font-weight: 700;
+            display: inline-block;
+            font-family: 'Gloria Hallelujah', cursive; /* Title font */
         }
 
         .header p {
             color: #666;
             font-size: 0.9em;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             font-style: italic;
+            font-family: 'Zain', sans-serif; /* Subtitle font */
         }
 
         .search-box {
@@ -47,92 +64,194 @@
             padding: 12px 20px;
             border: none;
             border-radius: 25px;
-            font-size: 16px;
+            font-size: 1em;
             background-color: white;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+            font-family: 'Lato', sans-serif; /* Keep Lato for input */
+        }
+
+        .button-container {
+            text-align: center;
             margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        #randomWordBtn, #toggleCrudeBtn {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            font-family: 'Lato', sans-serif; /* Keep Lato for buttons */
+            font-weight: 600;
+        }
+
+        #randomWordBtn:hover, #toggleCrudeBtn:hover {
+            background-color: #2980b9;
         }
 
         .word-list {
             background-color: white;
             border-radius: 15px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
         }
 
         .word-item {
-            padding: 15px 20px;
+            padding: 15px 20px; /* Increased padding for easier clicking */
             border-bottom: 1px solid #eee;
-            cursor: pointer;
-            transition: all 0.2s ease;
+            cursor: pointer; /* Indicates it's clickable */
+            transition: background-color 0.3s ease; /* Smoother hover effect */
+            background-color: transparent;
+            display: block; /* Ensure it takes full width */
+        }
+
+        .word-item:hover {
+            background-color: #f8f9fa;
         }
 
         .word-item:last-child {
             border-bottom: none;
         }
 
+        .highlight {
+            background-color: yellow !important;
+        }
 
-        .word-item:hover {
-            background-color: #f8f9fa;
+        .word-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px; /* Increased space between top row and definition/synonyms */
+            flex-wrap: wrap;
         }
 
         .word {
             font-weight: 600;
             color: #000000;
             font-size: 1.1em;
+            flex-grow: 1; /* Allows word to take available space */
+            flex-shrink: 1;
+            margin-right: 10px; /* Space after the word */
+            font-family: 'Gloria Hallelujah', cursive; /* Word font */
+            word-break: break-word; /* Prevent long words from overflowing */
+        }
+
+        .kelas-kata {
+            font-size: 0.85em; /* Slightly larger */
+            color: #666;
+            font-weight: 600;
+            margin-right: 10px;
+            flex-shrink: 0; /* Prevent shrinking */
+            font-family: 'Gloria Hallelujah', cursive; /* Kelas kata font */
+        }
+
+        .word-item.is-crude .word {
+            color: #e74c3c; /* Red color for crude words */
+        }
+
+        .speak-icon {
+            cursor: pointer;
+            color: #3498db;
+            font-size: 1.3em; /* Slightly larger icon */
+            flex-shrink: 0; /* Prevent shrinking */
+            transition: color 0.2s ease;
+            display: flex;
+            align-items: center;
+            padding: 5px; /* Add padding to make icon area easier to click */
+            margin: -5px; /* Use negative margin to counteract padding for layout */
+            margin-left: auto; /* Push to the right */
+            border-radius: 50%; /* Make click area round */
+        }
+
+        .speak-icon:hover {
+             color: #2980b9;
+             background-color: #e9f5fe; /* Subtle background on hover */
+        }
+
+        .speak-icon svg {
+            width: 1em;
+            height: 1em;
+            fill: currentColor;
+            display: block;
+        }
+
+        .synonym-bubbles {
+            margin-top: 0; /* Adjust spacing */
+            margin-bottom: 8px; /* Space below bubbles */
+            line-height: 1.8; /* Improve readability of bubbles */
+        }
+
+        .synonym-bubble {
+            display: inline-block;
+            background-color: #eaf2f8;
+            color: #2980b9;
+            font-size: 0.85em;
+            padding: 4px 10px; /* Increased padding */
+            border-radius: 15px; /* More rounded */
+            margin-right: 6px; /* Increased space between bubbles */
             margin-bottom: 5px;
+            white-space: nowrap;
+            font-family: 'Gloria Hallelujah', cursive; /* Synonym font */
         }
 
         .definition {
             color: #3498db;
             font-size: 0.95em;
-            display: none;
-            margin-bottom: 8px;
-            line-height: 1.4;
+            margin-top: 0;
+            margin-bottom: 0;
+            line-height: 1.6;
+            max-height: 0; /* Start collapsed */
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, padding-bottom 0.5s ease-in-out; /* Smooth transition for height and padding */
+            padding-bottom: 0; /* No bottom padding when collapsed */
+            font-family: 'Gloria Hallelujah', cursive; /* Definition font */
+            word-break: break-word; /* Prevent long words from overflowing */
         }
 
-        .synonym {
-            color: #2980b9;
-            font-size: 0.85em;
-            display: none;
-            background-color: #eaf2f8;
-            padding: 4px 8px;
-            border-radius: 12px;
-            display: inline-block;
-            margin-top: 5px;
-        }
+         .word-item.active .definition {
+             max-height: 500px; /* Increased max-height for flexibility */
+             padding-bottom: 8px; /* Add bottom padding when expanded */
+         }
 
-        /* Style for linked words within the definition */
+         /* Fallback for very long definitions, though large max-height is better */
+         /* .word-item.active .definition {
+             max-height: 1000px;
+             padding-bottom: 8px;
+         } */
+
+
         .linked-word {
             text-decoration: underline;
             color: #007bff;
-            /* Standard link color */
             cursor: pointer;
+            transition: color 0.2s ease;
         }
 
-        /* Optional highlight for scroll target */
-        .highlight {
-            background-color: yellow;
-            /* Highlight color */
-            transition: background-color 0.5s ease;
-            /* Smooth transition */
+        .linked-word:hover {
+            color: #0056b3;
         }
 
-         /* Style for search term highlighting */
         .highlight-search {
-            background-color: #ffc107; /* Yellow/Amber color for highlight */
-            font-weight: bold; /* Make highlighted text bold */
+            background-color: #ffc107;
+            font-weight: bold;
+            padding: 1px 3px;
+            border-radius: 3px;
         }
 
-
-        /* Display definition and synonym when item is active */
-        .word-item.active .definition {
-            display: block;
-        }
-
-         .word-item.active .synonym {
-             /* Only display if synonym exists */
-            display: block; /* Will be overridden by JS for empty synonyms */
+         .no-results {
+             padding: 20px;
+             text-align: center;
+             color: #666;
+             font-style: italic;
          }
+
     </style>
 
 </head>
@@ -140,276 +259,490 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Kamus Phenkbandia</h1>
+            <h1>kamus phenkbandia</h1>
             <p>Tekan kata untuk melihat artinya</p>
             <input type="text" class="search-box" placeholder="Cari kata..." id="searchInput">
+             <div class="button-container">
+                <button id="randomWordBtn">Kata Acak</button>
+                <button id="toggleCrudeBtn">Sembunyikan Kata Kasar</button>
+             </div>
         </div>
-        <div class="word-list" id="wordList"></div>
+        <div class="word-list" id="wordList">
+             </div>
     </div>
+
     <script>
         const words = [
-            { word: "2 Cm", definition: "Lontaran misoginis; ukuran yang dianggap kecil; perempuan dengan pandangan yang kurang baik", synonym: "perempuan" },
-            { word: "28", definition: "Nilai rendah ujian Bahasa Indonesia Rafael", synonym: "nilai jelek" },
-            { word: "Aduhai", definition: "Respon lucu terhadap keanehan", synonym: "aduh" },
-            { word: "Amsiong", definition: "Sebutan bahasa hokkien yang menunjukkan kekacauan atau kesialan", synonym: "kacau, hancur" },
-            { word: "Anak Kafun", definition: "Julukan Christian ke teman-teman yang merundungnya saat kelas 9 seperti Kevin Sormin.", synonym: "" },
-            { word: "Anti Woke", definition: "Julukan seseorang yang kontra terhadap politik di Amerika seperti LGBT", synonym: "" },
-            { word: "Apasi", definition: "Ungkapan kebingungan terhadap sesuatu; tidak mengerti maksudnya", synonym: "" },
-            { word: "Autis", definition: "Julukan seseorang yang memiliki sikap absurd; perilaku diluar batas wajar", synonym: "bodoh, gila" },
-            { word: "Bacot", definition: "Pernyataan tidak peduli atau menentang sesuatu dengan nada sinis", synonym: "bohong, hoaks" },
-            { word: "Bamako", definition: "Ibukota negara Mali; kota favorit Ferrizko yang dia temukan saat bermain game", synonym: "" },
-            { word: "Bencong", definition: "Seseorang yang berperilaku atau memiliki perilaku perempuan", synonym: "transgender, boti, lemah" },
-            { word: "Berlemak", definition: "Kata biasa yang sudah terkontaminasi atau punya makna aneh karena sering dipakai oleh Phenk", synonym: "tercemar" },
-            { word: "Bersikeras", definition: "Memaksa terus melakukan sesuatu", synonym: "ngeyel, ngotot" },
-            { word: "Bestie", definition: "Julukan untuk teman yang dekat (terkadang sinis/sarkas); teman baru", synonym: "teman" },
-            { word: "Borhap", definition: "Sesuatu yang berhubungan hal-hal dewasa; pelesetan situs pornografi", synonym: "porno" },
-            { word: "Buanget", definition: "Menunjukkan sesuatu yang berlebihan, terkadang dipakai untuk sarkas", synonym: "Banget" },
-            { word: "Buntung", definition: "Kehilangan salah satu organ tubuh", synonym: "cacat" },
-            { word: "Buta Permanen", definition: "Ejekan favorit Rafael untuk orang yang gambarnya dikasih mata putih sebelah, kesannya kehilangan mata selamanya", synonym: "buta" },
-            { word: "Campur Babi", definition: "Rumor soal makanan di restoran keluarga Christian yang dikatakan mengandung babi", synonym: "" },
-            { word: "ChatGPT", definition: "Situs AI yang bisa menjawab semua pertanyaan; asumsi menyontek untuk orang yang menggunakan AI", synonym: "" },
-            { word: "Cukaninas", definition: "Penulisan lain dari \"Suka Nindas\"", synonym: "suka nindas" },
-            { word: "Curhat", definition: "Bercerita sesuatu yang dalam kepada seseorang", synonym: "" },
-            { word: "Curwi", definition: "Ambil tanpa izin; Pelesetan kata \"curi\" yang berasal dari logat Christian", synonym: "curi, maling" },
-            { word: "Ditelepon", definition: "Ancaman dari seseorang (biasanya dari jauh) yang marah dan mengancam akan menelepon seseorang untuk dimarahi", synonym: "diancam, dimarahi" },
-            { word: "Dokumenter", definition: "Orang yang mendokumentasikan sesuatu", synonym: "cameraman" },
-            { word: "Dongok", definition: "Sebutan untuk seseorang yang dianggap melakukan sesuatu yang agak fatal", synonym: "bodoh" },
-            { word: "Emberan", definition: "Julukan untuk orang yang tidak bisa menjaga rahasia; sering membocorkan hal-hal dalam grup", synonym: "bocor" },
-            { word: "Entot", definition: "Istilah kasar untuk hubungan seksual; merendahkan seseorang (biasanya dipakai Rafael)", synonym: "" },
-            { word: "Faedah", definition: "Perbandingan untuk melakukan hal-hal yang bermanfaat seperti pelajaran alih-alih bermain game", synonym: "berguna" },
-            { word: "Gak Nyaman", definition: "Perasaan risih atau tidak enak (biasanya kepada seseorang)", synonym: "risih" },
-            { word: "Ganteng", definition: "Sebutan untuk grup cowok yang dianggap ganteng oleh Rafael seperti Nathan, Zakky, Kevin Sinaga, Kevin Sormin, dan Naldo.", synonym: "Tampan" },
-            { word: "Gasuka", definition: "Reaksi penolakan atau ketidaksukaan yang kuat", synonym: "jijik, tidak tertarik" },
-            { word: "Gay", definition: "Laki-laki yang tertarik kepada laki-laki; pasangan sesama jenis yang selalu bersama", synonym: "homo" },
-            { word: "Grup Kevin (circle kevin)", definition: "Geng yang sering dikaitkan dengan istilah “ganteng” di Phenk; geng yang berdampak", synonym: "" },
-            { word: "Hah", definition: "Respons spontan bingung, atau heran; (jika kapital) respons kaget & tidak sangka", synonym: "" },
-            { word: "Hapus", definition: "Perintah atau ajakan untuk menghilangkan sesuatu", synonym: "" },
-            { word: "Heh", definition: "Respons santai marah bercanda ketika mendapati sesuatu berlebihan", synonym: "" },
-            { word: "Hotel", definition: "Bisnis penginapan milik keluarga Rafael yang sering disinggung di Phenk", synonym: "penginapan, bisnis" },
-            { word: "Indomaret", definition: "Sebutan umum untuk toko grosir atau minimarket, walau bukan merek itu juga; kata yang  \"berlemak\"  karena kasus viral seseorang yang menunjukkan hal tak senonoh saat di Indomaret", synonym: "Minimarket" },
-            { word: "Intropeksi", definition: "Proses merenung dan memperbaiki diri setelah melakukan kesalahan", synonym: "refleksi, evaluasi" },
-            { word: "Jalan", definition: "Istilah untuk kegiatan jalan-jalan bareng, biasanya dipakai untuk phenktrip", synonym: "jalan-jalan" },
-            { word: "Jawak", definition: "Ungkapan kata-kata yang biasanya diartikan berbicara; menjawab sesuatu", synonym: "bicara, jawab" },
-            { word: "Jomok", definition: "Lelucon yang bernuansa homoseksual secara vulgar; hal-hal mesum", synonym: "homo, mesum" },
-            { word: "Jotos", definition: "Aksi memukul seseorang, biasanya sebagai bentuk marah", synonym: "hajar" },
-            { word: "Ketek Hitam", definition: "Julukan khas untuk ketek Rafael yang gelap, sering jadi bahan candaan atau ejekan Rafael", synonym: "" },
-            { word: "Kontol", definition: "Kata kotor yang digunakan saat sedang murka; kelamin pria", synonym: "" },
-            { word: "Lapor", definition: "Ucapan ancaman akan memberitahukan hal buruk ke orang tua/guru/pihak berwenang", synonym: "Ngadu" },
-            { word: "Lima", definition: "Angka berlemak; angka dari lima ganteng", synonym: "" },
-            { word: "Lohh", definition: "Ekspresi terkejut atau merasa heran terhadap sesuatu yang terjadi (biasanya dipakai di percakapan yang dianggap lucu karena asbun)", synonym: "lah, hayoo" },
-            { word: "Mampus", definition: "Respons sinis atau acuh terhadap kejadian buruk yang menimpa orang lain", synonym: "Matilah" },
-            { word: "Martabak", definition: "Makanan yang sering dijadikan lelucon anak Phenk untuk dijadikan oleh-oleh", synonym: "" },
-            { word: "Martabat", definition: "Nilai harga diri yang harus dijaga", synonym: "harga diri, kehormatan" },
-            { word: "Mastur", definition: "Sindiran ditujukan seseorang yang mesum untuk melakukan hal memuaskan diri sendiri tanpa mempedulikan apa yang terjadi", synonym: "masturbasi, coli" },
-            { word: "McDonald", definition: "Restoran cepat saji yang dianggap menyebabkan obesitas oleh anak Phenk", synonym: "Mekdi" },
-            { word: "Mikirin", definition: "Kondisi overthinking berkepanjangan soal hal receh; membayangkan seseorang", synonym: "overthinking, membayangkan" },
-            { word: "Murahan", definition: "Ejekan untuk anak perempuan yang dianggap rendahan karena berperilaku berlebihan kepada cowok", synonym: "" },
-            { word: "Murka", definition: "Sesuatu yang menyebabkan kemarahan baik dalam tingkatan kecil maupun besar", synonym: "marah, ngamuk, geram" },
-            { word: "Najis", definition: "Tidak suka dengan sesuatu; menolak sesuatu; respons jijik terhadap sesuatu yang dianggap tak layak", synonym: "tidak suka, tidak mau, jijik" },
-            { word: "Nias", definition: "Sebutan untuk suku dari Sumatra Utara", synonym: "" },
-            { word: "Obesitas", definition: "Kondisi tubuh sangat besar; seseorang dengan kelebihan berat badan", synonym: "gendut, sangat gemuk" },
-            { word: "Obestie", definition: "Teman dekat yang bertubuh gendut", synonym: "si gendut" },
-            { word: "Ortia", definition: "Orang tua yang bersikap protektif dan selalu ikut campur urusan anak.", synonym: "orang tua protektif" },
-            { word: "Pantengong", definition: "Mengatakan bodoh dengan santai dan bertujuan menghibur", synonym: "konyol" },
-            { word: "Peuu", definition: "Respons bersikap menantang hal yang terjadi; ekspresi jijik, eneg, atau ogah; \"apa\" dalam bahasa aceh", synonym: "iwh, cih" },
-            { word: "Pheng", definition: "Ejekan tidak pantas kepada orang-orang yang tolol; anak yang bodoh, hampir mendekati autis; anak yang memiliki gangguan dalam pertemanan sosial; kumpulan anak-anak yang mengacaukan sesuatu (anak yang dianggap hama)", synonym: "autis, anak tolol, beban masyarakat" },
-            { word: "Phenk", definition: "Suatu kelompok yang dibentuk di sekolah dengan tujuan kreatif dan saling membantu sesama; sebutan lebih sopan dari \"pheng\" tanpa maksud menghina; anak anak yang bersikap absurd", synonym: "" },
-            { word: "PhenkBand", definition: "Channel YouTube yang berisi lagu-lagu orisinal dari anak Phenk", synonym: "" },
-            { word: "Phenkbandia", definition: "Bentuk nama \"Phenk\" versi formal, biasanya digunakan untuk organisasi, negara fiksi, atau proyek bersama", synonym: "" },
-            { word: "PhenkEdu", definition: "Channel WhatsApp yang dibuat Ferrizko & Vincent dengan membagikan rangkuman pelajaran dan catatan untuk dipelajari sebelum ulangan/ujian", synonym: "" },
-            { word: "Polisi", definition: "Penegak hukum yang dipercaya; sering dijadikan ancaman untuk menakut-nakuti seseorang yang dinilai melanggar hukum", synonym: "" },
-            { word: "Privasi", definition: "Kondisi bersifat pribadi; bisa merujuk pada akun media sosial yang dikunci atau dibatasi", synonym: "rahasia, personal" },
-            { word: "Rokok", definition: "Benda berbentuk batang berisi tembakau yang dibakar dan dihisap; merujuk pada merek \"Marlboro\" yakni sebuah merek rokok kesukaan Rafael; objek pelampiasan ketenangan Rafael", synonym: "" },
-            { word: "Semut", definition: "Nama grup WhatsApp Rafael yang dibocorkan oleh Steven Noventus; ejekan yang dapat memancing amarah Rafael", synonym: "" },
-            { word: "Siapa Anjing?", definition: "Frasa refleks penuh emosi yang muncul dari seorang ibu yang tersinggung saat insiden tabrakan", synonym: "" },
-            { word: "Siapa Suruh Kamu Buat Begitu!", definition: "Frasa personifikasi yang diucapkan oleh Brian kepada Christian mengenai singa yang marah karena ditunjukkan hari tengah", synonym: "" },
-            { word: "Skibidi", definition: "Dari \"skibidi toilet\", serial kesukaan Christian; sesuatu yang buruk", synonym: "jelek" },
-            { word: "Skrinsut", definition: "Tangkapan layar (screenshot); memotret barang bukti", synonym: "screenshot" },
-            { word: "Suka Nindas", definition: "Partikel awalan untuk memulai topik pembicaraan Phenk (biasanya ajakan jalan)", synonym: "" },
-            { word: "Syndrome", definition: "Tingkah laku yang dianggap tidak normal, unik, atau terlalu aneh; sering digunakan untuk mengejek", synonym: "kelainan, gila ringan" },
-            { word: "Tante", definition: "Panggilan sopan untuk wanita dewasa seperti ibu dari teman", synonym: "bibi" },
-            { word: "Teori", definition: "Penyelidikan suatu konsep yang biasanya dilakukan secara absurd oleh anak Phenk", synonym: "" },
-            { word: "Tetot", definition: "Bunyi kesalahan dalam kuis atau pelajaran; lelucon yang sering digunakan ketika jawaban salah", synonym: "salah" },
-            { word: "Titip Salam", definition: "Ungkapan sopan sebelum keluar dari grup, kelas, atau komunitas; istilah yang sering digunakan oleh Rafael ketika keluar grup; sering digunakan Rafael ketika seseorang ingin pergi ke tempat yang jauh", synonym: "sampai jumpa" },
-            { word: "Tolol", definition: "Sebutan kasar ketika mendengar jawaban yang salah; julukan kepada orang yang melakukan tindakan bodoh", synonym: "bodoh, idiot" },
-            { word: "Voiceline", definition: "Pesan suara yang dikirim di platform digital; bukti rekaman suara", synonym: "Pesan suara" },
-            { word: "Woi", definition: "Seruan spontan untuk memanggil atau menegur seseorang; respons kaget dengan tujuan menasihati kalau perbuatan tersebut kelewatan batas", synonym: "hey" },
-            { word: "Woke", definition: "Istilah yang digunakan secara sinis untuk menggambarkan orang yang terlalu peduli terhadap politik seperti LGBT", synonym: "" }
+            { word: "2 Cm", definition: "Lontaran misoginis; ukuran yang dianggap kecil; perempuan dengan pandangan yang kurang baik", synonym: "perempuan", isCrude: true, kelasKata: "[jlk.]" },
+            { word: "28", definition: "Nilai rendah ujian Bahasa Indonesia Rafael", synonym: "nilai jelek", kelasKata: "[n.]" },
+            { word: "Aduhai", definition: "Respon lucu terhadap keanehan", synonym: "aduh", kelasKata: "[ungk.]" },
+            { word: "Amsiong", definition: "Sebutan bahasa hokkien yang menunjukkan kekacauan atau kesialan", synonym: "kacau, hancur", kelasKata: "[ungk.]" },
+            { word: "Anak Kafun", definition: "Julukan Christian ke teman-teman yang merundungnya saat kelas 9 seperti Kevin Sormin.", synonym: "", isCrude: true, kelasKata: "[jlk.]" },
+            { word: "Anti Woke", definition: "Julukan seseorang yang kontra terhadap politik di Amerika seperti LGBT", synonym: "", kelasKata: "[jlk.]" },
+            { word: "Apasi", definition: "Ungkapan kebingungan terhadap sesuatu; tidak mengerti maksudnya", synonym: "", kelasKata: "[ungk.]" },
+            { word: "Autis", definition: "Julukan seseorang yang memiliki sikap absurd; perilaku diluar batas wajar", synonym: "bodoh, gila", isCrude: true, kelasKata: "[jlk.]" },
+            { word: "Bacot", definition: "Pernyataan tidak peduli atau menentang sesuatu dengan nada sinis", synonym: "bohong, hoaks", isCrude: true, kelasKata: "[ungk.]" },
+            { word: "Bamako", definition: "Ibukota negara Mali; kota favorit Ferrizko yang dia temukan saat bermain game", synonym: "", kelasKata: "[n.]" },
+            { word: "Bencong", definition: "Seseorang yang berperilaku atau memiliki perilaku perempuan", synonym: "transgender, boti, lemah", isCrude: true, kelasKata: "[jlk.]" },
+            { word: "Berlemak", definition: "Kata biasa yang sudah terkontaminasi atau punya makna aneh karena sering dipakai oleh Phenk", synonym: "tercemar", kelasKata: "[adj.]" },
+            { word: "Bersikeras", definition: "Memaksa terus melakukan sesuatu", synonym: "ngeyel, ngotot", kelasKata: "[v.]" },
+            { word: "Bestie", definition: "Julukan untuk teman yang dekat (terkadang sinis/sarkas); teman baru", synonym: "teman", kelasKata: "[jlk.]" },
+            { word: "Borhap", definition: "Sesuatu yang berhubungan hal-hal dewasa; pelesetan situs pornografi", synonym: "porno", isCrude: true, kelasKata: "[n.]" },
+            { word: "Buanget", definition: "Menunjukkan sesuatu yang berlebihan, terkadang dipakai untuk sarkas", synonym: "Banget", kelasKata: "[adv.]" },
+            { word: "Buntung", definition: "Kehilangan salah satu organ tubuh", synonym: "cacat", isCrude: true, kelasKata: "[adj.]" },
+            { word: "Buta Permanen", definition: "Ejekan favorit Rafael untuk orang yang gambarnya dikasih mata putih sebelah, kesannya kehilangan mata selamanya", synonym: "buta", isCrude: true, kelasKata: "[jlk.]" },
+            { word: "Campur Babi", definition: "Rumor soal makanan di restoran keluarga Christian yang dikatakan mengandung babi", synonym: "", kelasKata: "[ungk.]" },
+            { word: "ChatGPT", definition: "Situs AI yang bisa menjawab semua pertanyaan; asumsi menyontek untuk orang yang menggunakan AI", synonym: "", kelasKata: "[n.]" },
+            { word: "Cukaninas", definition: "Penulisan lain dari \"Suka Nindas\"", synonym: "suka nindas", kelasKata: "[ungk.]" },
+            { word: "Curhat", definition: "Bercerita sesuatu yang dalam kepada seseorang", synonym: "", kelasKata: "[v.]" },
+            { word: "Curwi", definition: "Ambil tanpa izin; Pelesetan kata \"curi\" yang berasal dari logat Christian", synonym: "curi, maling", isCrude: true, kelasKata: "[v.]" },
+            { word: "Ditelepon", definition: "Ancaman dari seseorang (biasanya dari jauh) yang marah dan mengancam akan menelepon seseorang untuk dimarahi", synonym: "diancam, dimarahi", kelasKata: "[v.]" },
+            { word: "Dokumenter", definition: "Orang yang mendokumentasikan sesuatu", synonym: "cameraman", kelasKata: "[n.]" },
+            { word: "Dongok", definition: "Sebutan untuk seseorang yang dianggap melakukan sesuatu yang agak fatal", synonym: "bodoh", isCrude: true, kelasKata: "[jlk.]" },
+            { word: "Emberan", definition: "Julukan untuk orang yang tidak bisa menjaga rahasia; sering membocorkan hal-hal dalam grup", synonym: "bocor", kelasKata: "[jlk.]" },
+            { word: "Entot", definition: "Istilah kasar untuk hubungan seksual; merendahkan seseorang (usually dipakai Rafael)", synonym: "", isCrude: true, kelasKata: "[v.]" },
+            { word: "Faedah", definition: "Perbandingan untuk melakukan hal-hal yang bermanfaat seperti pelajaran alih-alih bermain game", synonym: "berguna", kelasKata: "[n.]" },
+            { word: "Gak Nyaman", definition: "Perasaan risih atau tidak enak (biasanya kepada seseorang)", synonym: "risih", kelasKata: "[adj.]" },
+            { word: "Ganteng", definition: "Sebutan untuk grup cowok yang dianggap ganteng oleh Rafael seperti Nathan, Zakky, Kevin Sinaga, Kevin Sormin, dan Naldo.", synonym: "Tampan", kelasKata: "[jlk.]" },
+            { word: "Gasuka", definition: "Reaksi penolakan atau ketidaksukaan yang kuat", synonym: "jijik, tidak tertarik", isCrude: true, kelasKata: "[ungk.]" },
+            { word: "Gay", definition: "Laki-laki yang tertarik kepada laki-laki; pasangan sesama jenis yang selalu bersama", synonym: "homo", isCrude: true, kelasKata: "[jlk.]" },
+            { word: "Grup Kevin (circle kevin)", definition: "Geng yang sering dikaitkan dengan istilah “ganteng” di Phenk; geng yang berdampak", synonym: "", kelasKata: "[n.]" },
+            { word: "Hah", definition: "Respons spontan bingung, atau heran; (jika kapital) respons kaget & tidak sangka", synonym: "", kelasKata: "[ungk.]" },
+            { word: "Hapus", definition: "Perintah atau ajakan untuk menghilangkan sesuatu", synonym: "", kelasKata: "[v.]" },
+            { word: "Heh", definition: "Respons santai marah bercanda ketika mendapati sesuatu berlebihan", synonym: "", kelasKata: "[ungk.]" },
+            { word: "Hotel", definition: "Bisnis penginapan milik keluarga Rafael yang sering disinggung di Phenk", synonym: "penginapan, bisnis", kelasKata: "[n.]" },
+            { word: "Indomaret", definition: "Sebutan umum untuk toko grosir atau minimarket, walau bukan merek itu juga; kata yang  \"berlemak\"  karena kasus viral seseorang yang menunjukkan hal tak senonoh saat di Indomaret", synonym: "Minimarket", isCrude: true, kelasKata: "[n.]" },
+            { word: "Intropeksi", definition: "Proses merenung dan memperbaiki diri setelah melakukan kesalahan", synonym: "refleksi, evaluasi", kelasKata: "[n.]" },
+            { word: "Jalan", definition: "Istilah untuk kegiatan jalan-jalan bareng, biasanya dipakai untuk phenktrip", synonym: "jalan-jalan", kelasKata: "[v.]" },
+            { word: "Jawak", definition: "Ungkapan kata-kata yang biasanya diartikan berbicara; menjawab sesuatu", synonym: "bicara, jawab", kelasKata: "[v.]" },
+            { word: "Jomok", definition: "Lelucon yang bernuansa homoseksual secara vulgar; hal-hal mesum", synonym: "homo, mesum", isCrude: true, kelasKata: "[jlk.]" },
+            { word: "Jotos", definition: "Aksi memukul seseorang, biasanya sebagai bentuk marah", synonym: "hajar", isCrude: true, kelasKata: "[v.]" },
+            { word: "Ketek Hitam", definition: "Julukan khas untuk ketek Rafael yang gelap, sering jadi bahan candaan atau ejekan Rafael", synonym: "", isCrude: true, kelasKata: "[jlk.]" },
+            { word: "Kontol", definition: "Kata kotor yang digunakan saat sedang murka; kelamin pria", synonym: "", isCrude: true, kelasKata: "[ungk.]" },
+            { word: "Lapor", definition: "Ucapan ancaman akan memberitahukan hal buruk ke orang tua/guru/pihak berwenang", synonym: "Ngadu", kelasKata: "[v.]" },
+            { word: "Lima", definition: "Angka berlemak; angka dari lima ganteng", synonym: "", kelasKata: "[n.]" },
+            { word: "Lohh", definition: "Ekspresi terkejut atau merasa heran terhadap sesuatu yang terjadi (usually dipakai di percakapan yang dianggap lucu karena asbun)", synonym: "lah, hayoo", kelasKata: "[ungk.]" },
+            { word: "Mampus", definition: "Respons sinis atau acuh terhadap kejadian buruk yang menimpa orang lain", synonym: "Matilah", isCrude: true, kelasKata: "[ungk.]" },
+            { word: "Martabak", definition: "Makanan yang sering dijadikan lelucon anak Phenk untuk dijadikan oleh-oleh", synonym: "", kelasKata: "[n.]" },
+            { word: "Martabat", definition: "Nilai harga diri yang harus dijaga", synonym: "harga diri, kehormatan", kelasKata: "[n.]" },
+            { word: "Mastur", definition: "Sindiran ditujukan seseorang yang mesum untuk melakukan hal memuaskan diri sendiri tanpa mempedulikan apa yang terjadi", synonym: "masturbasi, coli", isCrude: true, kelasKata: "[v.]" },
+            { word: "McDonald", definition: "Restoran cepat saji yang dianggap menyebabkan obesitas oleh anak Phenk", synonym: "Mekdi", kelasKata: "[n.]" },
+            { word: "Mikirin", definition: "Kondisi overthinking berkepanjangan soal hal receh; membayangkan seseorang", synonym: "overthinking, membayangkan", kelasKata: "[v.]" },
+            { word: "Murahan", definition: "Ejekan untuk anak perempuan yang dianggap rendahan karena berperilaku berlebihan kepada cowok", synonym: "", isCrude: true, kelasKata: "[jlk.]" },
+            { word: "Murka", definition: "Sesuatu yang menyebabkan kemarahan baik dalam tingkatan kecil maupun besar", synonym: "marah, ngamuk, geram", kelasKata: "[n.]" },
+            { word: "Najis", definition: "Tidak suka dengan sesuatu; menolak sesuatu; respons jijik terhadap sesuatu yang dianggap tak layak", synonym: "tidak suka, tidak mau, jijik", isCrude: true, kelasKata: "[ungk.]" },
+            { word: "Nias", definition: "Sebutan untuk suku dari Sumatra Utara", synonym: "", kelasKata: "[n.]" },
+            { word: "Obesitas", definition: "Kondisi tubuh sangat besar; seseorang dengan kelebihan berat badan", synonym: "gendut, sangat gemuk", isCrude: true, kelasKata: "[n.]" },
+            { word: "Obestie", definition: "Teman dekat yang bertubuh gendut", synonym: "si gendut", isCrude: true, kelasKata: "[jlk.]" },
+            { word: "Ortia", definition: "Orang tua yang bersikap protektif dan selalu ikut campur urusan anak.", synonym: "orang tua protektif", kelasKata: "[jlk.]" },
+            { word: "Pantengong", definition: "Mengatakan bodoh dengan santai dan bertujuan menghibur", synonym: "konyol", isCrude: true, kelasKata: "[jlk.]" },
+            { word: "Peuu", definition: "Respons bersikap menantang hal yang terjadi; ekspresi jijik, eneg, atau ogah; \"apa\" dalam bahasa aceh", synonym: "iwh, cih", isCrude: true, kelasKata: "[ungk.]" },
+            { word: "Pheng", definition: "Ejekan tidak pantas kepada orang-orang yang tolol; anak yang bodoh, hampir mendekati autis; anak yang memiliki gangguan dalam pertemanan sosial; kumpulan anak-anak yang mengacaukan sesuatu (anak yang dianggap hama)", synonym: "autis, anak tolol, beban masyarakat", isCrude: true, kelasKata: "[jlk.]" },
+            { word: "Phenk", definition: "Suatu kelompok yang dibentuk di sekolah dengan tujuan kreatif dan saling membantu sesama; sebutan lebih sopan dari \"pheng\" tanpa maksud menghina; anak anak yang bersikap absurd", synonym: "", kelasKata: "[n.]" },
+            { word: "PhenkBand", definition: "Channel YouTube yang berisi lagu-lagu orisinal dari anak Phenk", synonym: "", kelasKata: "[n.]" },
+            { word: "Phenkbandia", definition: "Bentuk nama \"Phenk\" versi formal, biasanya digunakan untuk organisasi, negara fiksi, atau proyek bersama", synonym: "", kelasKata: "[n.]" },
+            { word: "PhenkEdu", definition: "Channel WhatsApp yang dibuat Ferrizko & Vincent dengan membagikan rangkuman pelajaran dan catatan untuk dipelajari sebelum ulangan/ujian", synonym: "", kelasKata: "[n.]" },
+            { word: "Polisi", definition: "Penegak hukum yang dipercaya; sering dijadikan ancaman untuk menakut-nakuti seseorang yang dinilai melanggar hukum", synonym: "", kelasKata: "[n.]" },
+            { word: "Privasi", definition: "Kondisi bersifat pribadi; bisa merujuk pada akun media sosial yang dikunci atau dibatasi", synonym: "rahasia, personal", kelasKata: "[n.]" },
+            { word: "Rokok", definition: "Benda berbentuk batang berisi tembakau yang dibakar dan dihisap; merujuk pada merek \"Marlboro\" yakni sebuah merek rokok kesukaan Rafael; objek pelampiasan ketenangan Rafael", synonym: "", kelasKata: "[n.]" },
+            { word: "Semut", definition: "Nama grup WhatsApp Rafael yang dibocorkan oleh Steven Noventus; ejekan yang dapat memancing amarah Rafael", synonym: "", isCrude: true, kelasKata: "[jlk.]" },
+            { word: "Siapa Anjing?", definition: "Frasa refleks penuh emosi yang muncul dari seorang ibu yang tersinggung saat insiden tabrakan", synonym: "", isCrude: true, kelasKata: "[ungk.]" },
+            { word: "Siapa Suruh Kamu Buat Begitu!", definition: "Frasa personifikasi yang diucapkan oleh Brian kepada Christian mengenai singa yang marah karena ditunjukkan jari tengah", synonym: "", kelasKata: "[ungk.]" },
+            { word: "Skibidi", definition: "Dari \"skibidi toilet\", serial kesukaan Christian; sesuatu yang buruk", synonym: "jelek", isCrude: true, kelasKata: "[adj.]" },
+            { word: "Skrinsut", definition: "Tangkapan layar (screenshot); memotret barang bukti", synonym: "screenshot", kelasKata: "[n.]" },
+            { word: "Suka Nindas", definition: "Partikel awalan untuk memulai topik pembicaraan Phenk (biasanya ajakan jalan)", synonym: "", kelasKata: "[ungk.]" },
+            { word: "Syndrome", definition: "Tingkah laku yang dianggap tidak normal, unik, atau terlalu aneh; sering digunakan untuk mengejek", synonym: "kelainan, gila ringan", isCrude: true, kelasKata: "[jlk.]" },
+            { word: "Tante", definition: "Panggilan sopan untuk wanita dewasa seperti ibu dari teman", synonym: "bibi", kelasKata: "[n.]" },
+            { word: "Teori", definition: "Penyelidikan suatu konsep yang biasanya dilakukan secara absurd oleh anak Phenk", synonym: "", kelasKata: "[n.]" },
+            { word: "Tetot", definition: "Bunyi kesalahan dalam kuis atau pelajaran; lelucon yang sering digunakan ketika jawaban salah", synonym: "salah", kelasKata: "[ungk.]" },
+            { word: "Titip Salam", definition: "Ungkapan sopan sebelum keluar dari grup, kelas atau komunitas; istilah yang sering digunakan oleh Rafael ketika keluar grup; sering digunakan Rafael ketika seseorang ingin pergi ke tempat yang jauh", synonym: "sampai jumpa", kelasKata: "[ungk.]" },
+            { word: "Tolol", definition: "Sebutan kasar ketika mendengar jawaban yang salah; julukan kepada orang yang melakukan tindakan bodoh", synonym: "bodoh, idiot", isCrude: true, kelasKata: "[jlk.]" },
+            { word: "Voiceline", definition: "Pesan suara yang dikirim di platform digital; bukti rekaman suara", synonym: "Pesan suara", kelasKata: "[n.]" },
+            { word: "Woi", definition: "Seruan spontan untuk memanggil atau menegur seseorang; respons kaget dengan tujuan menasihati kalau perbuatan tersebut kelewatan batas", synonym: "hey", kelasKata: "[ungk.]" },
+            { word: "Woke", definition: "Istilah yang digunakan secara sinis untuk menggambarkan orang yang terlalu peduli terhadap politik seperti LGBT", synonym: "", kelasKata: "[adj.]" }
         ];
 
         const wordList = document.getElementById('wordList');
         const searchInput = document.getElementById('searchInput');
+        const randomWordBtn = document.getElementById('randomWordBtn');
+        const toggleCrudeBtn = document.getElementById('toggleCrudeBtn');
 
-        // Helper function to find a word object by word string (case-insensitive)
+        let areCrudeWordsHidden = false;
+
+        const synth = window.speechSynthesis;
+        const speechSupported = ('speechSynthesis' in window);
+
+
+        // Function to speak text
+        function speakText(text) {
+            if (!speechSupported || !text) return;
+            synth.cancel(); // Stop any ongoing speech
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'id-ID';
+            // Optional: Add error handling for speech
+            utterance.onerror = (event) => {
+                console.error('Speech synthesis error:', event.error);
+            };
+            synth.speak(utterance);
+        }
+
+
+        // Helper function to find a word object by word string (case-insensitive, considers linked word format)
         function findWordObject(wordString) {
             if (!wordString) return null;
-            const lowerCaseWord = wordString.toLowerCase();
-            return words.find(item => item.word.toLowerCase() === lowerCaseWord);
+             // Clean potential trailing punctuation from linked words
+            const cleanedWordString = wordString.replace(/[^a-zA-Z0-9\s]+$/, '').trim();
+            if (!cleanedWordString) return null;
+
+            const lowerCaseWord = cleanedWordString.toLowerCase();
+            // Find exact match first
+            let found = words.find(item => item.word.toLowerCase() === lowerCaseWord);
+             if (found) return found;
+
+             // If not found, try checking synonyms as well
+             found = words.find(item =>
+                 item.synonym && item.synonym.toLowerCase().split(',').map(s => s.trim()).includes(lowerCaseWord)
+             );
+             return found;
         }
+
 
         // Helper function to sanitize word for use as HTML ID
         function sanitizeWordId(wordString) {
-            return wordString.replace(/[^a-zA-Z0-9]/g, '_');
+             // Replace spaces and non-alphanumeric/underscore chars with underscore
+            return wordString.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_]/g, '');
         }
 
         // Helper function to highlight text with a search term
         function highlightText(text, term) {
             if (!term || !text) return text;
-            const lowerText = text.toLowerCase();
             const lowerTerm = term.toLowerCase();
-
-            // Use regex to find all occurrences of the term
-            // The regex uses word boundaries (\b) to avoid partial word matches (e.g., searching "the" doesn't highlight "there")
-            // Adjust regex if partial word matches are desired.
-             // For this specific case, searching might mean finding "an" in "ganteng", so let's not use word boundaries for now.
-            const regex = new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'); // Escape special characters
-
-            // Replace occurrences with the term wrapped in a span
-            return text.replace(regex, '<span class="highlight-search">$&</span>'); // $& represents the whole matched string
+            // Escape special characters in the term for regex
+            const escapedTerm = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const regex = new RegExp(`(${escapedTerm})`, 'gi'); // 'g' for global, 'i' for case-insensitive
+            return text.replace(regex, '<span class="highlight-search">$&</span>');
         }
+
+        // SVG Icon for Speaker (Simple Fill)
+        const speakerIconSVG = `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M3 9v6h4l5 5V4l-5 5H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 4.45v15.1c3.25-.83 5.5-3.73 5.5-7.55s-2.25-6.72-5.5-7.55z"/>
+            </svg>
+        `;
 
 
         function renderWords(filteredWords) {
-            wordList.innerHTML = '';
-            const searchTerm = searchInput.value; // Get current search term
+            if (!wordList) {
+                 console.error('Error: #wordList element not found!');
+                 return;
+            }
+            wordList.innerHTML = ''; // Clear existing list
+            const searchTerm = searchInput.value.trim(); // Get search term
 
+            if (filteredWords.length === 0) {
+                // Show "no results" message if the filtered list is empty
+                const noResultsDiv = document.createElement('div');
+                noResultsDiv.className = 'no-results';
+                noResultsDiv.textContent = 'Tidak ada kata yang ditemukan.';
+                wordList.appendChild(noResultsDiv);
+                return; // Stop rendering
+            }
+
+            // Render each word item
             filteredWords.forEach(item => {
                 const div = document.createElement('div');
-                div.id = `word-${sanitizeWordId(item.word)}`; // Add ID for scrolling
-                div.className = 'word-item';
+                div.id = `word-${sanitizeWordId(item.word)}`; // Set unique ID
+                div.className = 'word-item' + (item.isCrude ? ' is-crude' : ''); // Add crude class if applicable
 
+                // --- Build Synonym Bubbles HTML ---
+                let synonymBubblesHTML = '';
+                if (item.synonym && item.synonym.trim() !== "") {
+                    const synonyms = item.synonym.split(',').map(s => s.trim()).filter(s => s !== '');
+                    if (synonyms.length > 0) {
+                        synonymBubblesHTML = '<div class="synonym-bubbles">';
+                        synonyms.forEach(syn => {
+                            // Highlight synonyms if they match the search term
+                            const highlightedSyn = searchTerm ? highlightText(syn, searchTerm) : syn;
+                            synonymBubblesHTML += `<span class="synonym-bubble">${highlightedSyn}</span>`;
+                        });
+                        synonymBubblesHTML += '</div>';
+                    }
+                }
+                // --- End Synonym Bubbles HTML ---
+
+
+                // --- Build Definition HTML ---
                 let definitionHTMLContent = '';
-                // Simple split by space to process parts of the definition
-                const wordsInDefinition = item.definition.split(' ');
+                if (item.definition) {
+                     // Split definition by words to check for linked words
+                     const wordsInDefinition = item.definition.split(/(\s+)/);
 
-                wordsInDefinition.forEach((wordPiece, index) => {
-                     // Separate potential punctuation at the start and end
-                    const leadingPunctuationMatch = wordPiece.match(/^(\W+)/);
-                    const leadingPunctuation = leadingPunctuationMatch ? leadingPunctuationMatch[1] : '';
-                    const trailingPunctuationMatch = wordPiece.match(/(\W+)$/);
-                    const trailingPunctuation = trailingPunctuationMatch ? trailingPunctuationMatch[1] : '';
-
-                    // Clean word for dictionary lookup
-                    const cleanedWord = wordPiece
-                                        .replace(/^(\W+)/, '') // Remove leading punctuation
-                                        .replace(/(\W+)$/, ''); // Remove trailing punctuation
-
-                    const linkedWordItem = findWordObject(cleanedWord);
-
-                    // Text content that will be displayed (and potentially highlighted)
-                    let displayedTextContent = cleanedWord;
-
-                     // Apply search highlighting to the text content before linking
-                    if (searchTerm) {
-                         displayedTextContent = highlightText(cleanedWord, searchTerm);
-                    }
-
-
-                    if (linkedWordItem) {
-                        // If it's a dictionary word, wrap the (potentially highlighted) displayedTextContent in a link
-                        definitionHTMLContent += `${leadingPunctuation}<a href="#word-${sanitizeWordId(linkedWordItem.word)}" class="linked-word">${displayedTextContent}</a>${trailingPunctuation}`;
-                    } else {
-                        // If not a dictionary word, just add the (potentially highlighted) displayedTextContent
-                         // Need to handle the punctuation highlighting as well if the search term includes punctuation
-                         // A safer approach is to highlight the entire wordPiece if it matches or contains the term
-                         if (searchTerm && wordPiece.toLowerCase().includes(searchTerm.toLowerCase())) {
-                              definitionHTMLContent += highlightText(wordPiece, searchTerm);
-                         } else {
-                             definitionHTMLContent += wordPiece;
+                     wordsInDefinition.forEach(wordPiece => {
+                         if (wordPiece.trim() === '') {
+                             definitionHTMLContent += wordPiece; // Keep whitespace
+                             return;
                          }
-                    }
 
-                    // Add space back
-                    if (index < wordsInDefinition.length - 1) {
-                        definitionHTMLContent += ' ';
-                    }
-                });
+                         // Preserve punctuation around words
+                         const leadingPunctuationMatch = wordPiece.match(/^(\W+)/);
+                         const leadingPunctuation = leadingPunctuationMatch ? leadingPunctuationMatch[1] : '';
+                         const trailingPunctuationMatch = wordPiece.match(/(\W+)$/);
+                         const trailingPuncturation = trailingPunctuationMatch ? trailingPunctuationMatch[1] : '';
 
-                // Apply highlighting to the main word and synonym separately
+                         const cleanedWord = wordPiece
+                                           .replace(/^(\W+)/, '')
+                                           .replace(/(\W+)$/, '');
+
+                         const linkedWordItem = findWordObject(cleanedWord); // Check if the cleaned word is a dictionary entry
+
+                         let displayedTextContent = cleanedWord;
+                         if (searchTerm) {
+                              // Highlight the word part itself if it matches search
+                              displayedTextContent = highlightText(cleanedWord, searchTerm);
+                         }
+
+                         if (linkedWordItem) {
+                             // If it's a linked word, create an anchor tag pointing to its ID
+                             definitionHTMLContent += `${leadingPunctuation}<a href="#word-${sanitizeWordId(linkedWordItem.word)}" class="linked-word">${displayedTextContent}</a>${trailingPuncturation}`;
+                         } else {
+                              // If not a linked word, just highlight the whole word piece including punctuation if it matches search
+                              if (searchTerm) {
+                                  definitionHTMLContent += highlightText(wordPiece, searchTerm);
+                              } else {
+                                  definitionHTMLContent += wordPiece; // Add as plain text
+                              }
+                         }
+                     });
+                }
+                // --- End Definition HTML ---
+
+
+                // Highlight the main word if it matches the search term
                 let highlightedWord = item.word;
                 if (searchTerm) {
                      highlightedWord = highlightText(item.word, searchTerm);
                 }
 
+                 // Get the kelasKata label HTML
+                const kelasKataHTML = item.kelasKata ? `<span class="kelas-kata">${item.kelasKata}</span>` : '';
 
-                let highlightedSynonym = item.synonym;
-                 // Only highlight if synonym exists and is not "-"
-                if (searchTerm && item.synonym && item.synonym.trim() !== "" && item.synonym !== "-") {
-                     highlightedSynonym = highlightText(item.synonym, searchTerm);
-                }
+                // Get the speak icon HTML if speech is supported
+                const speakIconHTML = speechSupported ? `<span class="speak-icon" title="Dengarkan">${speakerIconSVG}</span>` : '';
 
-                const synonymHTML = (item.synonym && item.synonym.trim() !== "" && item.synonym !== "-")
-                    ? `<div class="synonym">${highlightedSynonym}</div>`
-                    : '';
-
+                // Build the full HTML for the word item
                 div.innerHTML = `
-                    <div class="word">${highlightedWord}</div>
+                    <div class="word-container">
+                        <span class="word">${highlightedWord}</span>
+                        ${kelasKataHTML}
+                        ${speakIconHTML}
+                    </div>
+                    ${synonymBubblesHTML}
                     <div class="definition">${definitionHTMLContent}</div>
-                    ${synonymHTML}
                 `;
 
+                // Append the created element to the list
                 wordList.appendChild(div);
+            });
+
+             // Hide speak icons if speech is not supported by the browser
+             if (!speechSupported) {
+                document.querySelectorAll('.speak-icon').forEach(icon => icon.style.display = 'none');
+             }
+        }
+
+        // Function to close all currently active (expanded) word items
+        function closeAllWordItems() {
+            document.querySelectorAll('.word-item.active').forEach(item => {
+                item.classList.remove('active');
             });
         }
 
-        // Delegated event listener for the wordList container
+
+        // Event listener for clicks within the word list
         wordList.addEventListener('click', (event) => {
             const target = event.target;
-            // Check if click was on a linked word or inside one (due to highlighting span)
-            const clickedLink = target.closest('.linked-word');
 
+            // 1. Handle clicks on the Speak Icon
+            const speakIcon = target.closest('.speak-icon');
+            if (speakIcon) {
+                event.stopPropagation(); // Prevent click from bubbling up to toggle definition
+                const wordItem = speakIcon.closest('.word-item');
+                if (wordItem) {
+                    const wordId = wordItem.id.replace('word-', '');
+                    // Find the original word data to get complete info
+                    const originalItem = words.find(w => sanitizeWordId(w.word) === wordId);
+
+                    if (originalItem) {
+                        const wordText = originalItem.word;
+                         let textToSpeak = wordText;
+
+                         // If definition is open, read word, definition, and synonym
+                         if (wordItem.classList.contains('active')) {
+                              textToSpeak += originalItem.definition ? `. Arti: ${originalItem.definition}` : '';
+                              if (originalItem.synonym && originalItem.synonym.trim() !== "") {
+                                 textToSpeak += `. Sinonim: ${originalItem.synonym}`;
+                              }
+                         } // Else, just read the word
+
+                        speakText(textToSpeak);
+                    }
+                }
+                return; // Stop handling after speak icon click
+            }
+
+            // 2. Handle clicks on Linked Words within definitions
+            const clickedLink = target.closest('.linked-word');
             if (clickedLink) {
-                event.preventDefault(); // Prevent default link action
-                const targetWordId = clickedLink.getAttribute('href').substring(1);
-                const targetElement = document.getElementById(targetWordId);
+                event.preventDefault(); // Prevent default anchor link navigation
+                const targetWordId = clickedLink.getAttribute('href').substring(1); // Get the target word ID
+                const targetElement = document.getElementById(targetWordId); // Find the corresponding word item element
+
                 if (targetElement) {
-                    // Scroll the target word item into view
+                     // Check if the target word is hidden by the crude filter
+                    const targetWordData = words.find(w => sanitizeWordId(w.word) === targetWordId.replace('word-',''));
+                    if (areCrudeWordsHidden && targetWordData && targetWordData.isCrude) {
+                        alert(`Kata "${targetWordData.word}" saat ini disembunyikan oleh filter kata kasar.`); // Inform user
+                        return; // Do not navigate/scroll
+                    }
+
+                    closeAllWordItems(); // Close currently open items
+
+                    // Scroll the target element into view
                     targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    // Add highlight class temporarily
+
+                    // Activate and highlight the target element
+                    targetElement.classList.add('active'); // Open definition
                     targetElement.classList.add('highlight');
+                    // Remove highlight after a delay
                     setTimeout(() => {
                         targetElement.classList.remove('highlight');
-                    }, 1000); // Remove highlight after 1 second
+                    }, 1000);
+                } else {
+                    console.warn('Linked word target element not found:', targetWordId);
                 }
-            } else {
-                // If not a linked word, find the parent word-item and toggle its definition
-                let wordItem = target.closest('.word-item');
-                // Ensure the click wasn't on the search highlight span within the definition
-                 if (wordItem && !target.classList.contains('highlight-search') && !target.closest('.highlight-search')) {
-                    // Toggle active class
-                    wordItem.classList.toggle('active');
+                return; // Stop handling after linked word click
+            }
 
-                    // Toggle display of definition and synonym based on active class
-                    const definitionElement = wordItem.querySelector('.definition');
-                    const synonymElement = wordItem.querySelector('.synonym');
+            // 3. Handle clicks on the Word Item itself (to toggle definition)
+            // This should happen only if the click wasn't on a specific interactive element handled above.
+            let wordItem = target.closest('.word-item');
+             // Check if the click occurred within a word item AND not specifically on a highlight, synonym, or linked word
+             // (Speak icon is handled first, so no need to check it here again)
+             if (wordItem && !target.classList.contains('highlight-search') && !target.closest('.highlight-search') && !target.classList.contains('synonym-bubble') && !target.closest('.synonym-bubbles') && !target.classList.contains('linked-word')) {
 
-                    if (definitionElement) {
-                        definitionElement.style.display = wordItem.classList.contains('active') ? 'block' : 'none';
-                    }
-                    // Check if synonym element exists and has content before toggling display
-                    if (synonymElement && synonymElement.textContent.trim() !== "") {
-                        synonymElement.style.display = wordItem.classList.contains('active') ? 'block' : 'none';
-                    } else if (synonymElement) {
-                        // If synonym element exists but is empty, ensure it's hidden
-                         synonymElement.style.display = 'none';
-                    }
+                // Toggle the 'active' class to show/hide the definition
+                if (wordItem.classList.contains('active')) {
+                    wordItem.classList.remove('active');
+                } else {
+                    closeAllWordItems(); // Close others first
+                    wordItem.classList.add('active');
                 }
             }
+             // Clicks on the definition area itself (when open) will not toggle,
+             // only clicks on the top part or re-clicking the item toggle.
         });
 
 
-        function searchWords() {
-            const searchTerm = searchInput.value.toLowerCase();
-            const filtered = words.filter(item =>
-                item.word.toLowerCase().includes(searchTerm) ||
-                item.definition.toLowerCase().includes(searchTerm) ||
-                (item.synonym && item.synonym.toLowerCase().includes(searchTerm))
-            );
-            renderWords(filtered); // Render filtered words with highlighting
+        // Function to filter the words based on search term and crude filter
+        function filterWords() {
+            const searchTerm = searchInput.value.toLowerCase().trim(); // Get and clean search term
+
+            let filtered = words.filter(item => {
+                // Check if the item matches the search term in word, definition, or synonym
+                const matchesSearch = searchTerm === '' ||
+                    (item.word && item.word.toLowerCase().includes(searchTerm)) ||
+                    (item.definition && item.definition.toLowerCase().includes(searchTerm)) ||
+                    (item.synonym && item.synonym.toLowerCase().includes(searchTerm));
+
+                // Check if the item matches the crude filter state
+                const matchesCrudeFilter = !areCrudeWordsHidden || !item.isCrude;
+
+                return matchesSearch && matchesCrudeFilter; // Return true if both conditions are met
+            });
+
+            return filtered; // Return the filtered array
         }
 
-        searchInput.addEventListener('input', searchWords);
-        renderWords(words); // Initial render of all words (without search term)
+
+        // Function to filter words and render the list
+        function renderFilteredWords() {
+            const filtered = filterWords(); // Get the currently filtered words
+            renderWords(filtered); // Render the list using the filtered words
+            // Optionally keep items open if they were open before filtering?
+            // For simplicity, closing all on filter change is standard.
+            closeAllWordItems();
+        }
+
+        // Event listener for when the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', (event) => {
+             // Initial render of the word list when the page loads
+             renderFilteredWords();
+        });
+
+        // Event listener for input in the search box
+        searchInput.addEventListener('input', renderFilteredWords);
+
+        // Event listener for the "Kata Acak" button
+        randomWordBtn.addEventListener('click', () => {
+             const availableWords = filterWords(); // Get words based on current filters
+            if (availableWords.length === 0) {
+                 alert("Tidak ada kata yang tersedia untuk dipilih secara acak dengan filter saat ini.");
+                 return;
+             }
+
+            // Select a random word from the available words
+            const randomIndex = Math.floor(Math.random() * availableWords.length);
+            const randomWord = availableWords[randomIndex];
+            const targetId = sanitizeWordId(randomWord.word); // Get the ID for the element
+
+            // Find the element in the DOM
+            const targetElement = document.getElementById(`word-${targetId}`);
+
+            if (targetElement) {
+                 closeAllWordItems(); // Close currently open items
+
+                // Scroll the element into view
+                targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                // Activate (open definition) and highlight the element
+                targetElement.classList.add('active');
+                targetElement.classList.add('highlight');
+                // Remove highlight after a delay
+                setTimeout(() => {
+                    targetElement.classList.remove('highlight');
+                }, 1000);
+
+                 // Speak the word and its information
+                 const wordText = randomWord.word;
+                 const definitionText = randomWord.definition;
+                 const synonymText = randomWord.synonym;
+
+                 let textToSpeak = wordText;
+                 textToSpeak += definitionText ? `. Arti: ${definitionText}` : '';
+                 if (synonymText && synonymText.trim() !== "") {
+                    textToSpeak += `. Sinonim: ${synonymText}`;
+                 }
+                 speakText(textToSpeak); // Speak the text
+            } else {
+                // This case should ideally not happen if filterWords works correctly
+                 console.error('Random word element not found in DOM after filtering:', randomWord.word);
+            }
+        });
+
+        // Event listener for the "Sembunyikan/Tampilkan Kata Kasar" button
+        toggleCrudeBtn.addEventListener('click', () => {
+            areCrudeWordsHidden = !areCrudeWordsHidden; // Toggle the state
+
+            // Update button text based on the new state
+            if (areCrudeWordsHidden) {
+                toggleCrudeBtn.textContent = 'Tampilkan Kata Kasar';
+            } else {
+                toggleCrudeBtn.textContent = 'Sembunyikan Kata Kasar';
+            }
+
+            renderFilteredWords(); // Re-render the list based on the new filter state
+        });
+
     </script>
 
 </body>
