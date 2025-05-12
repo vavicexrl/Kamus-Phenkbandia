@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,6 +35,13 @@
             margin-bottom: 10px;
         }
 
+        .header p {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
         .search-box {
             width: 100%;
             padding: 12px 20px;
@@ -41,14 +49,14 @@
             border-radius: 25px;
             font-size: 16px;
             background-color: white;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
         }
 
         .word-list {
             background-color: white;
             border-radius: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         .word-item {
@@ -58,142 +66,232 @@
             transition: all 0.2s ease;
         }
 
+        .word-item:last-child {
+            border-bottom: none;
+        }
+
+
         .word-item:hover {
             background-color: #f8f9fa;
         }
 
         .word {
             font-weight: 600;
-            color: #2d3436;
+            color: #000000;
             font-size: 1.1em;
+            margin-bottom: 5px;
         }
 
         .definition {
-            color: #666;
-            margin-top: 5px;
+            color: #3498db;
             font-size: 0.95em;
             display: none;
+            margin-bottom: 8px;
+            line-height: 1.4;
         }
 
+        .synonym {
+            color: #2980b9;
+            font-size: 0.85em;
+            display: none;
+            background-color: #eaf2f8;
+            padding: 4px 8px;
+            border-radius: 12px;
+            display: inline-block;
+            margin-top: 5px;
+        }
+
+        /* Style for linked words within the definition */
+        .linked-word {
+            text-decoration: underline;
+            color: #007bff;
+            /* Standard link color */
+            cursor: pointer;
+        }
+
+        /* Optional highlight for scroll target */
+        .highlight {
+            background-color: yellow;
+            /* Highlight color */
+            transition: background-color 0.5s ease;
+            /* Smooth transition */
+        }
+
+         /* Style for search term highlighting */
+        .highlight-search {
+            background-color: #ffc107; /* Yellow/Amber color for highlight */
+            font-weight: bold; /* Make highlighted text bold */
+        }
+
+
+        /* Display definition and synonym when item is active */
         .word-item.active .definition {
             display: block;
         }
 
-        @media (max-width: 480px) {
-            .container {
-                padding: 15px;
-            }
-            .word-item {
-                padding: 12px 15px;
-            }
-        }
+         .word-item.active .synonym {
+             /* Only display if synonym exists */
+            display: block; /* Will be overridden by JS for empty synonyms */
+         }
     </style>
+
 </head>
+
 <body>
     <div class="container">
         <div class="header">
             <h1>Kamus Phenkbandia</h1>
+            <p>Tekan kata untuk melihat artinya</p>
             <input type="text" class="search-box" placeholder="Cari kata..." id="searchInput">
         </div>
         <div class="word-list" id="wordList"></div>
     </div>
-
     <script>
         const words = [
-            { word: "2 Cm", definition: "Perempuan; Ejekan ukuran" },
-            { word: "28", definition: "Nilai rendah" },
-            { word: "Aduhai", definition: "Aduh" },
-            { word: "Amsiong", definition: "Yaelah" },
-            { word: "Anak Kafun", definition: "Julukan Christian ke Kevin" },
-            { word: "Anti Woke", definition: "Kontra-Politik AS; LGBT" },
-            { word: "Apasi", definition: "Bingung" },
-            { word: "Bacot", definition: "Hoaks" },
-            { word: "Bencong", definition: "Transgender" },
-            { word: "Berlemak", definition: "Tercemar" },
-            { word: "Borhap", definition: "Porno" },
-            { word: "Buta Permanen", definition: "Buta" },
-            { word: "Buanget", definition: "Sangat" },
-            { word: "Campur Babi", definition: "Isu di restoran Christian" },
-            { word: "Curhat", definition: "Sharing emosi" },
-            { word: "Ditelepon", definition: "Dimarahi/Diancam" },
-            { word: "Dokumenter", definition: "Tukang rekam" },
-            { word: "Dongok", definition: "Bodoh" },
-            { word: "Emberan", definition: "Gabisa jaga rahasia" },
-            { word: "Faidah", definition: "Berguna" },
-            { word: "Gak Nyaman", definition: "Tidak enakan" },
-            { word: "Ganteng", definition: "Grup Kevin" },
-            { word: "Gasuka", definition: "Najis" },
-            { word: "Grup Kevin", definition: "Ganteng" },
-            { word: "Hah", definition: "Respons tiba-tiba" },
-            { word: "Heh", definition: "Respons kaget" },
-            { word: "Hotel", definition: "Bisnis ortu Rafael" },
-            { word: "Indomaret", definition: "Penyebutan untuk toko grosir terkenal" },
-            { word: "Intropeksi", definition: "Memperbaiki diri" },
-            { word: "Jalak", definition: "Jalan-jalan; Phenktrip" },
-            { word: "Jawak", definition: "Bicara" },
-            { word: "Jomok", definition: "Bodoh mesum" },
-            { word: "Kata awalan", definition: "Suka Nindas" },
-            { word: "Lapor", definition: "Ancaman kondisi berbahaya" },
-            { word: "Lima", definition: "Grup Kevin Sinaga" },
-            { word: "Lohh", definition: "Respons mengejutkan" },
-            { word: "Martabat", definition: "Harga diri" },
-            { word: "Martabak", definition: "Martabak" },
-            { word: "Mastur", definition: "Masturbasi" },
-            { word: "McDonald", definition: "Restoran cepat saji" },
-            { word: "Mikirin", definition: "Kepikiran terus" },
-            { word: "Murahan", definition: "Cewek Sekolah Negeri" },
-            { word: "Murka", definition: "Marah" },
-            { word: "Najis", definition: "Tidak suka; Jijik" },
-            { word: "Nias", definition: "Suku Sumatra" },
-            { word: "Obesitas", definition: "Sangat gemuk" },
-            { word: "Ortia", definition: "Orang tua protektif (Ortu + Nia)" },
-            { word: "Pantengong", definition: "Bodoh" },
-            { word: "Peuu", definition: "Huhh" },
-            { word: "Phenk", definition: "Grup gangster Medan" },
-            { word: "PhenkBandia", definition: "Negara Phenk" },
-            { word: "Polisi", definition: "Polisi" },
-            { word: "Rokok", definition: "Rokok" },
-            { word: "Semut", definition: "Grup belajar biologi Rafael" },
-            { word: "Siapa Anjing?", definition: "Respons emak marah saat tabrakan" },
-            { word: "Siapa Suruh Kamu Buat Begitu!", definition: "Frasa untuk perbuatan berbahaya" },
-            { word: "Suka Nindas", definition: "Kata awalan" },
-            { word: "Syndrome", definition: "Tingkah aneh" },
-            { word: "Tante", definition: "Sebutan wanita sopan" },
-            { word: "Teori", definition: "Pengantar bahasan berbahaya" },
-            { word: "Woke", definition: "Politik" },
-            { word: "Woi", definition: "Hey" }
+            { word: "2 Cm", definition: "Lontaran misoginis; ukuran yang dianggap kecil; perempuan dengan pandangan yang kurang baik", synonym: "perempuan" },
+            { word: "28", definition: "Nilai rendah ujian Bahasa Indonesia Rafael", synonym: "nilai jelek" },
+            { word: "Aduhai", definition: "Respon lucu terhadap keanehan", synonym: "aduh" },
+            { word: "Amsiong", definition: "Sebutan bahasa hokkien yang menunjukkan kekacauan atau kesialan", synonym: "kacau, hancur" },
+            { word: "Anak Kafun", definition: "Julukan Christian ke teman-teman yang merundungnya saat kelas 9 seperti Kevin Sormin.", synonym: "" },
+            { word: "Anti Woke", definition: "Julukan seseorang yang kontra terhadap politik di Amerika seperti LGBT", synonym: "" },
+            { word: "Apasi", definition: "Ungkapan kebingungan terhadap sesuatu; tidak mengerti maksudnya", synonym: "" },
+            { word: "Autis", definition: "Julukan seseorang yang memiliki sikap absurd; perilaku diluar batas wajar", synonym: "bodoh, gila" },
+            { word: "Bacot", definition: "Pernyataan tidak peduli atau menentang sesuatu dengan nada sinis", synonym: "bohong, hoaks" },
+            { word: "Bamako", definition: "Ibukota negara Mali; kota favorit Ferrizko yang dia temukan saat bermain game", synonym: "" },
+            { word: "Bencong", definition: "Seseorang yang berperilaku atau memiliki perilaku perempuan", synonym: "transgender, boti, lemah" },
+            { word: "Berlemak", definition: "Kata biasa yang sudah terkontaminasi atau punya makna aneh karena sering dipakai oleh Phenk", synonym: "tercemar" },
+            { word: "Bersikeras", definition: "Memaksa terus melakukan sesuatu", synonym: "ngeyel, ngotot" },
+            { word: "Bestie", definition: "Julukan untuk teman yang dekat (terkadang sinis/sarkas); teman baru", synonym: "teman" },
+            { word: "Borhap", definition: "Sesuatu yang berhubungan hal-hal dewasa; pelesetan situs pornografi", synonym: "porno" },
+            { word: "Buanget", definition: "Menunjukkan sesuatu yang berlebihan, terkadang dipakai untuk sarkas", synonym: "Banget" },
+            { word: "Buntung", definition: "Kehilangan salah satu organ tubuh", synonym: "cacat" },
+            { word: "Buta Permanen", definition: "Ejekan favorit Rafael untuk orang yang gambarnya dikasih mata putih sebelah, kesannya kehilangan mata selamanya", synonym: "buta" },
+            { word: "Campur Babi", definition: "Rumor soal makanan di restoran keluarga Christian yang dikatakan mengandung babi", synonym: "" },
+            { word: "ChatGPT", definition: "Situs AI yang bisa menjawab semua pertanyaan; asumsi menyontek untuk orang yang menggunakan AI", synonym: "" },
+            { word: "Cukaninas", definition: "Penulisan lain dari \"Suka Nindas\"", synonym: "suka nindas" },
+            { word: "Curhat", definition: "Bercerita sesuatu yang dalam kepada seseorang", synonym: "" },
+            { word: "Curwi", definition: "Ambil tanpa izin; Pelesetan kata \"curi\" yang berasal dari logat Christian", synonym: "curi, maling" },
+            { word: "Ditelepon", definition: "Ancaman dari seseorang (biasanya dari jauh) yang marah dan mengancam akan menelepon seseorang untuk dimarahi", synonym: "diancam, dimarahi" },
+            { word: "Dokumenter", definition: "Orang yang mendokumentasikan sesuatu", synonym: "cameraman" },
+            { word: "Dongok", definition: "Sebutan untuk seseorang yang dianggap melakukan sesuatu yang agak fatal", synonym: "bodoh" },
+            { word: "Emberan", definition: "Julukan untuk orang yang tidak bisa menjaga rahasia; sering membocorkan hal-hal dalam grup", synonym: "bocor" },
+            { word: "Entot", definition: "Istilah kasar untuk hubungan seksual; merendahkan seseorang (biasanya dipakai Rafael)", synonym: "" },
+            { word: "Faedah", definition: "Perbandingan untuk melakukan hal-hal yang bermanfaat seperti pelajaran alih-alih bermain game", synonym: "berguna" },
+            { word: "Gak Nyaman", definition: "Perasaan risih atau tidak enak (biasanya kepada seseorang)", synonym: "risih" },
+            { word: "Ganteng", definition: "Sebutan untuk grup cowok yang dianggap ganteng oleh Rafael seperti Nathan, Zakky, Kevin Sinaga, Kevin Sormin, dan Naldo.", synonym: "Tampan" },
+            { word: "Gasuka", definition: "Reaksi penolakan atau ketidaksukaan yang kuat", synonym: "jijik, tidak tertarik" },
+            { word: "Gay", definition: "Laki-laki yang tertarik kepada laki-laki; pasangan sesama jenis yang selalu bersama", synonym: "homo" },
+            { word: "Grup Kevin (circle kevin)", definition: "Geng yang sering dikaitkan dengan istilah “ganteng” di Phenk; geng yang berdampak", synonym: "" },
+            { word: "Hah", definition: "Respons spontan bingung, atau heran; (jika kapital) respons kaget & tidak sangka", synonym: "" },
+            { word: "Hapus", definition: "Perintah atau ajakan untuk menghilangkan sesuatu", synonym: "" },
+            { word: "Heh", definition: "Respons santai marah bercanda ketika mendapati sesuatu berlebihan", synonym: "" },
+            { word: "Hotel", definition: "Bisnis penginapan milik keluarga Rafael yang sering disinggung di Phenk", synonym: "penginapan, bisnis" },
+            { word: "Indomaret", definition: "Sebutan umum untuk toko grosir atau minimarket, walau bukan merek itu juga; kata yang tercemar karena kasus viral seseorang yang menunjukkan hal tak senonoh saat di Indomaret", synonym: "Minimarket" },
+            { word: "Intropeksi", definition: "Proses merenung dan memperbaiki diri setelah melakukan kesalahan", synonym: "refleksi, evaluasi" },
+            { word: "Jalan", definition: "Istilah untuk kegiatan jalan-jalan bareng, biasanya dipakai untuk phenktrip", synonym: "Molor" },
+            { word: "Jawak", definition: "Ungkapan kata-kata yang biasanya diartikan berbicara; menjawab sesuatu", synonym: "bicara, jawab" },
+            { word: "Jomok", definition: "Lelucon yang bernuansa homoseksual secara vulgar; hal-hal mesum", synonym: "homo, mesum" },
+            { word: "Jotos", definition: "Aksi memukul seseorang, biasanya sebagai bentuk marah", synonym: "hajar" },
+            { word: "Ketek Hitam", definition: "Julukan khas untuk ketek Rafael yang gelap, sering jadi bahan candaan atau ejekan Rafael", synonym: "" },
+            { word: "Kontol", definition: "Kata kotor yang digunakan saat sedang murka; kelamin pria", synonym: "" },
+            { word: "Lapor", definition: "Ucapan ancaman akan memberitahukan hal buruk ke orang tua/guru/pihak berwenang", synonym: "Ngadu" },
+            { word: "Lima", definition: "Angka berlemak; angka dari lima ganteng", synonym: "" },
+            { word: "Lohh", definition: "Ekspresi terkejut atau merasa heran terhadap sesuatu yang terjadi (biasanya dipakai di percakapan yang dianggap lucu karena asbun)", synonym: "lah, hayoo" },
+            { word: "Mampus", definition: "Respons sinis atau acuh terhadap kejadian buruk yang menimpa orang lain", synonym: "Matilah" },
+            { word: "Martabak", definition: "Makanan yang sering dijadikan lelucon anak Phenk untuk dijadikan oleh-oleh", synonym: "" },
+            { word: "Martabat", definition: "Nilai harga diri yang harus dijaga", synonym: "harga diri, kehormatan" },
+            { word: "Mastur", definition: "Sindiran ditujukan seseorang yang mesum untuk melakukan hal memuaskan diri sendiri tanpa mempedulikan apa yang terjadi", synonym: "masturbasi, coli" },
+            { word: "McDonald", definition: "Restoran cepat saji yang dianggap menyebabkan obesitas oleh anak Phenk", synonym: "Mekdi" },
+            { word: "Mikirin", definition: "Kondisi overthinking berkepanjangan soal hal receh; membayangkan seseorang", synonym: "overthinking, membayangkan" },
+            { word: "Murahan", definition: "Ejekan untuk anak perempuan yang dianggap rendahan karena berperilaku berlebihan kepada cowok", synonym: "" },
+            { word: "Murka", definition: "Sesuatu yang menyebabkan kemarahan baik dalam tingkatan kecil maupun besar", synonym: "marah, ngamuk, geram" },
+            { word: "Najis", definition: "Tidak suka dengan sesuatu; menolak sesuatu; respons jijik terhadap sesuatu yang dianggap tak layak", synonym: "tidak suka, tidak mau, jijik" },
+            { word: "Nias", definition: "Sebutan untuk suku dari Sumatra Utara", synonym: "" },
+            { word: "Obesitas", definition: "Kondisi tubuh sangat besar; seseorang dengan kelebihan berat badan", synonym: "gendut, sangat gemuk" },
+            { word: "Obestie", definition: "Teman dekat yang bertubuh gendut", synonym: "si gendut" },
+            { word: "Ortia", definition: "Orang tua yang bersikap protektif dan selalu ikut campur urusan anak.", synonym: "orang tua protektif" },
+            { word: "Pantengong", definition: "Mengatakan bodoh dengan santai dan bertujuan menghibur", synonym: "konyol" },
+            { word: "Peuu", definition: "Respons bersikap menantang hal yang terjadi; ekspresi jijik, eneg, atau ogah; \"apa\" dalam bahasa aceh", synonym: "iwh, cih" },
+            { word: "Pheng", definition: "Ejekan tidak pantas kepada orang-orang yang tolol; anak yang bodoh, hampir mendekati autis; anak yang memiliki gangguan dalam pertemanan sosial; kumpulan anak-anak yang mengacaukan sesuatu (anak yang dianggap hama)", synonym: "autis, anak tolol, beban masyarakat" },
+            { word: "Phenk", definition: "Suatu kelompok yang dibentuk di sekolah dengan tujuan kreatif dan saling membantu sesama; sebutan lebih sopan dari \"pheng\" tanpa maksud menghina; anak anak yang bersikap absurd", synonym: "" },
+            { word: "PhenkBand", definition: "Channel YouTube yang berisi lagu-lagu orisinal dari anak Phenk", synonym: "" },
+            { word: "Phenkbandia", definition: "Bentuk nama \"Phenk\" versi formal, biasanya digunakan untuk organisasi, negara fiksi, atau proyek bersama", synonym: "" },
+            { word: "PhenkEdu", definition: "Channel WhatsApp yang dibuat Ferrizko & Vincent dengan membagikan rangkuman pelajaran dan catatan untuk dipelajari sebelum ulangan/ujian", synonym: "" },
+            { word: "Polisi", definition: "Penegak hukum yang dipercaya; sering dijadikan ancaman untuk menakut-nakuti seseorang yang dinilai melanggar hukum", synonym: "" },
+            { word: "Privasi", definition: "Kondisi bersifat pribadi; bisa merujuk pada akun media sosial yang dikunci atau dibatasi", synonym: "rahasia, personal" },
+            { word: "Rokok", definition: "Benda berbentuk batang berisi tembakau yang dibakar dan dihisap; merujuk pada merek \"Marlboro\" yakni sebuah merek rokok kesukaan Rafael; objek pelampiasan ketenangan Rafael", synonym: "" },
+            { word: "Semut", definition: "Nama grup WhatsApp Rafael yang dibocorkan oleh Steven Noventus; ejekan yang dapat memancing amarah Rafael", synonym: "" },
+            { word: "Siapa Anjing?", definition: "Frasa refleks penuh emosi yang muncul dari seorang ibu yang tersinggung saat insiden tabrakan", synonym: "" },
+            { word: "Siapa Suruh Kamu Buat Begitu!", definition: "Frasa personifikasi yang diucapkan oleh Brian kepada Christian mengenai singa yang marah karena ditunjukkan hari tengah", synonym: "" },
+            { word: "Skibidi", definition: "Dari \"skibidi toilet\", serial kesukaan Christian; sesuatu yang buruk", synonym: "jelek" },
+            { word: "Skrinsut", definition: "Tangkapan layar (screenshot); memotret barang bukti", synonym: "screenshot" },
+            { word: "Suka Nindas", definition: "Partikel awalan untuk memulai topik pembicaraan Phenk (biasanya ajakan jalan)", synonym: "" },
+            { word: "Syndrome", definition: "Tingkah laku yang dianggap tidak normal, unik, atau terlalu aneh; sering digunakan untuk mengejek", synonym: "kelainan, gila ringan" },
+            { word: "Tante", definition: "Panggilan sopan untuk wanita dewasa seperti ibu dari teman", synonym: "bibi" },
+            { word: "Teori", definition: "Penyelidikan suatu konsep yang biasanya dilakukan secara absurd oleh anak Phenk", synonym: "" },
+            { word: "Tetot", definition: "Bunyi kesalahan dalam kuis atau pelajaran; lelucon yang sering digunakan ketika jawaban salah", synonym: "salah" },
+            { word: "Titip Salam", definition: "Ungkapan sopan sebelum keluar dari grup, kelas, atau komunitas; istilah yang sering digunakan oleh Rafael ketika keluar grup; sering digunakan Rafael ketika seseorang ingin pergi ke tempat yang jauh", synonym: "sampai jumpa" },
+            { word: "Tolol", definition: "Sebutan kasar ketika mendengar jawaban yang salah; julukan kepada orang yang melakukan tindakan bodoh", synonym: "bodoh, idiot" },
+            { word: "Voiceline", definition: "Pesan suara yang dikirim di platform digital; bukti rekaman suara", synonym: "Pesan suara" },
+            { word: "Woi", definition: "Seruan spontan untuk memanggil atau menegur seseorang; respons kaget dengan tujuan menasihati kalau perbuatan tersebut kelewatan batas", synonym: "hey" },
+            { word: "Woke", definition: "Istilah yang digunakan secara sinis untuk menggambarkan orang yang terlalu peduli terhadap politik seperti LGBT", synonym: "" }
         ];
 
         const wordList = document.getElementById('wordList');
         const searchInput = document.getElementById('searchInput');
 
+        // Helper function to find a word object by word string (case-insensitive)
+        function findWordObject(wordString) {
+            if (!wordString) return null;
+            const lowerCaseWord = wordString.toLowerCase();
+            return words.find(item => item.word.toLowerCase() === lowerCaseWord);
+        }
+
+        // Helper function to sanitize word for use as HTML ID
+        function sanitizeWordId(wordString) {
+            return wordString.replace(/[^a-zA-Z0-9]/g, '_');
+        }
+
+        // Helper function to highlight text with a search term
+        function highlightText(text, term) {
+            if (!term || !text) return text;
+            const lowerText = text.toLowerCase();
+            const lowerTerm = term.toLowerCase();
+
+            // Use regex to find all occurrences of the term
+            // The regex uses word boundaries (\b) to avoid partial word matches (e.g., searching "the" doesn't highlight "there")
+            // Adjust regex if partial word matches are desired.
+             // For this specific case, searching might mean finding "an" in "ganteng", so let's not use word boundaries for now.
+            const regex = new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'); // Escape special characters
+
+            // Replace occurrences with the term wrapped in a span
+            return text.replace(regex, '<span class="highlight-search">$&</span>'); // $& represents the whole matched string
+        }
+
+
         function renderWords(filteredWords) {
             wordList.innerHTML = '';
+            const searchTerm = searchInput.value; // Get current search term
+
             filteredWords.forEach(item => {
                 const div = document.createElement('div');
+                div.id = `word-${sanitizeWordId(item.word)}`; // Add ID for scrolling
                 div.className = 'word-item';
-                div.innerHTML = `
-                    <div class="word">${item.word}</div>
-                    <div class="definition">${item.definition}</div>
-                `;
-                div.addEventListener('click', () => {
-                    div.classList.toggle('active');
-                });
-                wordList.appendChild(div);
-            });
-        }
 
-        function searchWords() {
-            const searchTerm = searchInput.value.toLowerCase();
-            const filtered = words.filter(item => 
-                item.word.toLowerCase().includes(searchTerm) || 
-                item.definition.toLowerCase().includes(searchTerm)
-            );
-            renderWords(filtered);
-        }
+                let definitionHTMLContent = '';
+                // Simple split by space to process parts of the definition
+                const wordsInDefinition = item.definition.split(' ');
 
-        searchInput.addEventListener('input', searchWords);
-        renderWords(words);
-    </script>
-</body>
-  </html>
+                wordsInDefinition.forEach((wordPiece, index) => {
+                     // Separate potential punctuation at the start and end
+                    const leadingPunctuationMatch = wordPiece.match(/^(\W+)/);
+                    const leadingPunctuation = leadingPunctuationMatch ? leadingPunctuationMatch[1] : '';
+                    const trailingPunctuationMatch = wordPiece.match(/(\W+)$/);
+                    const trailingPunctuation = trailingPunctuationMatch ? trailingPunctuationMatch[1] : '';
+
+                    // Clean word for dictionary lookup
+                    const cleanedWord = wordPiece
+                                        .replace(/^(\W+)/, '') // Remove leading punctuation
+                                        .replace(/(\W+)$/, ''); // Remove trailing punctuation
+
+                    const linkedWordItem 
