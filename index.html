@@ -294,4 +294,124 @@
                                         .replace(/^(\W+)/, '') // Remove leading punctuation
                                         .replace(/(\W+)$/, ''); // Remove trailing punctuation
 
-                    const linkedWordItem 
+                    const linkedWordItem = findWordObject(cleanedWord);
+
+                    // Text content that will be displayed (and potentially highlighted)
+                    let displayedTextContent = cleanedWord;
+
+                     // Apply search highlighting to the text content before linking
+                    if (searchTerm) {
+                         displayedTextContent = highlightText(cleanedWord, searchTerm);
+                    }
+
+
+                    if (linkedWordItem) {
+                        // If it's a dictionary word, wrap the (potentially highlighted) displayedTextContent in a link
+                        definitionHTMLContent += `${leadingPunctuation}<a href="#word-${sanitizeWordId(linkedWordItem.word)}" class="linked-word">${displayedTextContent}</a>${trailingPunctuation}`;
+                    } else {
+                        // If not a dictionary word, just add the (potentially highlighted) displayedTextContent
+                         // Need to handle the punctuation highlighting as well if the search term includes punctuation
+                         // A safer approach is to highlight the entire wordPiece if it matches or contains the term
+                         if (searchTerm && wordPiece.toLowerCase().includes(searchTerm.toLowerCase())) {
+                              definitionHTMLContent += highlightText(wordPiece, searchTerm);
+                         } else {
+                             definitionHTMLContent += wordPiece;
+                         }
+                    }
+
+                    // Add space back
+                    if (index < wordsInDefinition.length - 1) {
+                        definitionHTMLContent += ' ';
+                    }
+                });
+
+                // Apply highlighting to the main word and synonym separately
+                let highlightedWord = item.word;
+                if (searchTerm) {
+                     highlightedWord = highlightText(item.word, searchTerm);
+                }
+
+
+                let highlightedSynonym = item.synonym;
+                 // Only highlight if synonym exists and is not "-"
+                if (searchTerm && item.synonym && item.synonym.trim() !== "" && item.synonym !== "-") {
+                     highlightedSynonym = highlightText(item.synonym, searchTerm);
+                }
+
+                const synonymHTML = (item.synonym && item.synonym.trim() !== "" && item.synonym !== "-")
+                    ? `<div class="synonym">${highlightedSynonym}</div>`
+                    : '';
+
+                div.innerHTML = `
+                    <div class="word">${highlightedWord}</div>
+                    <div class="definition">${definitionHTMLContent}</div>
+                    ${synonymHTML}
+                `;
+
+                wordList.appendChild(div);
+            });
+        }
+
+        // Delegated event listener for the wordList container
+        wordList.addEventListener('click', (event) => {
+            const target = event.target;
+            // Check if click was on a linked word or inside one (due to highlighting span)
+            const clickedLink = target.closest('.linked-word');
+
+            if (clickedLink) {
+                event.preventDefault(); // Prevent default link action
+                const targetWordId = clickedLink.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetWordId);
+                if (targetElement) {
+                    // Scroll the target word item into view
+                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // Add highlight class temporarily
+                    targetElement.classList.add('highlight');
+                    setTimeout(() => {
+                        targetElement.classList.remove('highlight');
+                    }, 1000); // Remove highlight after 1 second
+                }
+            } else {
+                // If not a linked word, find the parent word-item and toggle its definition
+                let wordItem = target.closest('.word-item');
+                // Ensure the click wasn't on the search highlight span within the definition
+                 if (wordItem && !target.classList.contains('highlight-search') && !target.closest('.highlight-search')) {
+                    // Toggle active class
+                    wordItem.classList.toggle('active');
+
+                    // Toggle display of definition and synonym based on active class
+                    const definitionElement = wordItem.querySelector('.definition');
+                    const synonymElement = wordItem.querySelector('.synonym');
+
+                    if (definitionElement) {
+                        definitionElement.style.display = wordItem.classList.contains('active') ? 'block' : 'none';
+                    }
+                    // Check if synonym element exists and has content before toggling display
+                    if (synonymElement && synonymElement.textContent.trim() !== "") {
+                        synonymElement.style.display = wordItem.classList.contains('active') ? 'block' : 'none';
+                    } else if (synonymElement) {
+                        // If synonym element exists but is empty, ensure it's hidden
+                         synonymElement.style.display = 'none';
+                    }
+                }
+            }
+        });
+
+
+        function searchWords() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const filtered = words.filter(item =>
+                item.word.toLowerCase().includes(searchTerm) ||
+                item.definition.toLowerCase().includes(searchTerm) ||
+                (item.synonym && item.synonym.toLowerCase().includes(searchTerm))
+            );
+            renderWords(filtered); // Render filtered words with highlighting
+        }
+
+        searchInput.addEventListener('input', searchWords);
+        renderWords(words); // Initial render of all words (without search term)
+    </script>
+
+</body>
+
+</html>
